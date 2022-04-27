@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "40f1df78-1500-4aea-ace3-49911e9c7782",
+    "_postman_id": "03ce3095-65b3-416d-8b56-114ada3da651",
     "name": "Octonews",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -35,10 +35,7 @@
         {
           "listen": "test",
           "script": {
-            "exec": [
-              "const jsonData = pm.response.json();",
-              "pm.environment.set(\"token\", jsonData.data.token );"
-            ],
+            "exec": [""],
             "type": "text/javascript"
           }
         }
@@ -66,19 +63,19 @@
       "response": []
     },
     {
-      "name": "createNews",
+      "name": "addNews No Image",
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Authorization",
-            "value": "{{token}}",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUxMDc3NTg3LCJleHAiOjE2NTM2Njk1ODd9.YFUUklnp6z8TwnGKVs8tApAZvSFo_M16f7aB0z-aWfs",
             "type": "default"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"title\": \"Title de la news\",\n    \"desc\": \"Desc de la news\"\n}",
+          "raw": "{\n    \"title\": \" werwers\",\n    \"introduction\": \"Dwerwerws\",\n    \"text\": \"nay\",\n    \"category\": \"Nature\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -91,6 +88,96 @@
           "host": ["127", "0", "0", "1"],
           "port": "3000",
           "path": ["news"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addNews With Image",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUxMDc3NTg3LCJleHAiOjE2NTM2Njk1ODd9.YFUUklnp6z8TwnGKVs8tApAZvSFo_M16f7aB0z-aWfs",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/news",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["news"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editNews",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUxMDc3NTg3LCJleHAiOjE2NTM2Njk1ODd9.YFUUklnp6z8TwnGKVs8tApAZvSFo_M16f7aB0z-aWfs",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"introduction\": \"werw\",\n    \"text\": \"tewerwqs\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/news/2",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["news", "2"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deleteNews",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUxMDc3NTg3LCJleHAiOjE2NTM2Njk1ODd9.YFUUklnp6z8TwnGKVs8tApAZvSFo_M16f7aB0z-aWfs",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"introduction\": \"werw\",\n    \"text\": \"tewerwqs\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/news/2",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["news", "2"]
         }
       },
       "response": []
