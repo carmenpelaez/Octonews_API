@@ -1,10 +1,10 @@
 const jsonwebtoken = require("jsonwebtoken");
 
 const JWTgenerator = async (id) => {
-  let tokenInfo;
+  let token;
   try {
-    // Generar token con información del usuario
-    const token = {
+    // Generate token with user info
+    const tokenInfo = {
       id,
     };
 
