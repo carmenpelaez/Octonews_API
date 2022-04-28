@@ -1,6 +1,5 @@
-//VALIDACION JWT
+//VALIDATION JWT
 const jwt = require("jsonwebtoken");
-const getDB = require("../database/config");
 
 const isAuth = async (req, res, next) => {
   try {
@@ -18,11 +17,13 @@ const isAuth = async (req, res, next) => {
       res.status(403).send({ msg: "Token invalid" });
     }
 
+    //TODO: CHECK IF USER EXISTS IN BD AND GIVE req.user all values except password
     const { id } = tokenInfo;
     req.user = id;
 
     next();
   } catch (error) {
+    //TODO: CHANGE THIS TO next(error)
     console.error(error.message);
   }
 };
