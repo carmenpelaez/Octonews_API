@@ -1,5 +1,5 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
+const { deleteImage } = require("../../helpers/deleteImage");
 
 const deleteNews = async (req, res, next) => {
   let connection;
@@ -9,21 +9,11 @@ const deleteNews = async (req, res, next) => {
 
     const { idNews } = req.params;
 
-    //first we search for the owner of the news we want to edit.
-    const [newsOwner] = await connection.query(
-      `
-          SELECT id_user
-          FROM news
-          WHERE id=?
-        `,
-      [idNews]
-    );
-
-    const [owner] = newsOwner;
-    //Then we check if the auth user is the same as the owner of the news
-
-    if (req.user !== owner.id_user) {
-      throw generateError("No tienes permisos para borrar esta noticia", 403);
+    //From the the middleware CheckNews
+    //Check if the news have an image
+    //Delete image on local if there is one
+    if (req.news.image) {
+      await deleteImage(req.news.image);
     }
 
     //We delete the news
