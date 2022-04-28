@@ -1,14 +1,13 @@
 const getDB = require("../../database/config");
-const isAuth = require("../../middlewares/isAuth"); /* No estoy seguro de que el import de isAuth vaya aqui, pero lo pongo de momento. Quizas vaya en el endpoint del server.js */
 
-async function getPreviousNews(req, res, next) {
+async function getNews(req, res, next) {
   let connection;
 
   try {
     connection = await getDB();
-
-    if (req.params) {
-      const { date } = req.params;
+    /* He cambiado req.params por req.querys, volver a revisar toda la función */
+    if (req.query) {
+      const { date } = req.query;
       console.log(date);
 
       const [result] = await connection.query(
@@ -55,4 +54,4 @@ async function getPreviousNews(req, res, next) {
   }
 }
 
-module.exports = getPreviousNews;
+module.exports = getNews;

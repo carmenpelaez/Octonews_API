@@ -1,5 +1,4 @@
 const getDB = require("../../database/config");
-const isAuth = require("../../middlewares/isAuth"); /* No estoy seguro de que el import de isAuth vaya aqui, pero lo pongo de momento. Quizas vaya en el endpoint del server.js */
 
 async function voteNews(req, res, next) {
   let connection;
@@ -8,9 +7,9 @@ async function voteNews(req, res, next) {
     connection = await getDB();
 
     const { id_news } = req.params;
-    const { id_user, vote } = req.body;
+    const { id_user, vote } =
+      req.body; /* EL ID USER SOBRA, TENGO QUE COGERLO DEL TOKEN */
 
-    /* TENGO QUE HACER QUE CHECKIDNEWS SEA UNA FUNCIÓN APARTE. UN HELPER. AÑADIRLO EN OTRO ARCHIVO */
     const [checkIdNews] = await connection.query(
       `SELECT * FROM news WHERE id=?`,
       [id_news]
@@ -22,20 +21,8 @@ async function voteNews(req, res, next) {
         message: "Lo sentimos, la noticia que quieres votar no existe.",
       });
     }
-    /* TENGO QUE HACER QUE CHECKIDNEWS SEA UNA FUNCIÓN APARTE. UN HELPER. AÑADIRLO EN OTRO ARCHIVO */
-    const [checkIdUser] = await connection.query(
-      `SELECT name, id, email FROM users WHERE id = ?`,
-      [id_user]
-    );
 
-    if (checkIdUser.length === 0) {
-      return res.send({
-        status: 404,
-        message: "El usuario que has introducido es incorrecto",
-      });
-    }
-
-    /* TENGO QUE HACER QUE CHECKIDNEWS SEA UNA FUNCIÓN APARTE. UN HELPER. AÑADIRLO EN OTRO ARCHIVO */
+    /* ESTO ES EL JOI, LO TENGO QUE PONER AL PRINCIPIO, POR CIERTO */
     if (vote > 1 || vote < -1) {
       return res.send({
         status: 404,
@@ -61,7 +48,7 @@ async function voteNews(req, res, next) {
             "Ya has hecho este voto en esta noticia. Puedes modificar tu voto pero no votar más de una vez",
         });
       }
-    }
+    } /* AQUI VA UN ELSE. EN CASO DE QUE NO EXISTA EL VOTO SE CREA POR PRIMERA VEZ EL VOTO */
 
     /* I think the parameters of this "if" are useless, tell me when you guys check up the code */
     if (
@@ -69,11 +56,14 @@ async function voteNews(req, res, next) {
       vote > 1 ||
       vote < -1
     ) {
+      /* AQUI EN VEZ DE DELETE VA UPDATE.
+      EL UPDATE VA DENTRO DE
+      */
       const [deletePreviousVoteOnTheSameNew] = await connection.query(
         `DELETE FROM news_votes WHERE id_user =? AND id_news=?;`,
         [id_user, id_news]
       );
-
+      /* ESTE ES EL INSERT QUE VA EN LA LINEA 63 */
       const [result] = await connection.query(
         `INSERT INTO news_votes (id_user, id_news, vote, date, lastUpdate)
          VALUES (?,?,?,current_timestamp(), current_timestamp());`,
