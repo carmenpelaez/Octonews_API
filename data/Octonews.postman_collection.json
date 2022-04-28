@@ -1,6 +1,8 @@
 {
 	"info": {
-		"_postman_id": "03ce3095-65b3-416d-8b56-114ada3da651",
+
+		"_postman_id": "56aba4f0-6314-4741-9633-126927eada5b",
+
 		"name": "Octonews",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -80,19 +82,123 @@
 			"response": []
 		},
 		{
+
+			"name": "getNews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3000/news",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"news"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getNews con otra fecha",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3020/news?date=2022-04-04",
+					"host": [
+						"localhost"
+					],
+					"port": "3020",
+					"path": [
+						"news"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2022-04-04"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getNews con fecha y categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3020/news?date=2022-04-04&category=categoria",
+					"host": [
+						"localhost"
+					],
+					"port": "3020",
+					"path": [
+						"news"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2022-04-04"
+						},
+						{
+							"key": "category",
+							"value": "categoria"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getNews con categoría, para día actual",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3020/news?category=categoria",
+					"host": [
+						"localhost"
+					],
+					"port": "3020",
+					"path": [
+						"news"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "categoria"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+
 			"name": "addNews No Image",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjUxMTY5NDQ4LCJleHAiOjE2NTM3NjE0NDh9.o5s7LesEQz-R5mlQH_ytn5BTGPYCZpGKmXRbF_12LAI",
+      
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUxMDc3NTg3LCJleHAiOjE2NTM2Njk1ODd9.YFUUklnp6z8TwnGKVs8tApAZvSFo_M16f7aB0z-aWfs",
+
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
+
 					"raw": "{\n    \"title\": \" wawawaasdas\",\n    \"introduction\": \"Dlalalalalalalala\",\n    \"text\": \"this is a text with so many characters\",\n    \"category\": \"Culture\"\n}",
+
 					"options": {
 						"raw": {
 							"language": "json"
@@ -123,11 +229,14 @@
 				"header": [
 					{
 						"key": "Authorization",
+
 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjUxMTY5NDQ4LCJleHAiOjE2NTM3NjE0NDh9.o5s7LesEQz-R5mlQH_ytn5BTGPYCZpGKmXRbF_12LAI",
+
 						"type": "default"
 					}
 				],
 				"body": {
+
 					"mode": "formdata",
 					"formdata": [
 						{
@@ -180,19 +289,22 @@
 			"response": []
 		},
 		{
-			"name": "editNews No Image",
+
+			"name": "voteNews",
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjUxMTY5NDQ4LCJleHAiOjE2NTM3NjE0NDh9.o5s7LesEQz-R5mlQH_ytn5BTGPYCZpGKmXRbF_12LAI",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjUxMTcyMzQwLCJleHAiOjE2NTM3NjQzNDB9.O0vuGlSwz84PsjEyu1d3852J2AIX1JggaNKgPhUffvA",
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"introduction\": \"we324432rw\",\n    \"text\": \"3tewerwqssdfsadfsdafsadfsadf\"\n}",
+
+					"raw": "{\n    \"vote\": -1\n}",
+
 					"options": {
 						"raw": {
 							"language": "json"
@@ -200,7 +312,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/news/14",
+
+					"raw": "http://127.0.0.1:3000/news/2/votes",
+
 					"protocol": "http",
 					"host": [
 						"127",
@@ -211,20 +325,26 @@
 					"port": "3000",
 					"path": [
 						"news",
-						"14"
+						"2",
+						"votes"
+
 					]
 				}
 			},
 			"response": []
 		},
 		{
+
 			"name": "editNews With Image",
+
 			"request": {
 				"method": "PUT",
 				"header": [
 					{
 						"key": "Authorization",
+
 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjUxMTY5NDQ4LCJleHAiOjE2NTM3NjE0NDh9.o5s7LesEQz-R5mlQH_ytn5BTGPYCZpGKmXRbF_12LAI",
+            
 						"type": "default"
 					}
 				],
@@ -247,6 +367,7 @@
 							"src": "/D:/Edu/julcjwb9czn81.png"
 						}
 					],
+
 					"options": {
 						"raw": {
 							"language": "json"
@@ -254,7 +375,9 @@
 					}
 				},
 				"url": {
+
 					"raw": "http://127.0.0.1:3000/news/14",
+
 					"protocol": "http",
 					"host": [
 						"127",
@@ -265,7 +388,9 @@
 					"port": "3000",
 					"path": [
 						"news",
+
 						"14"
+
 					]
 				}
 			},
@@ -278,13 +403,17 @@
 				"header": [
 					{
 						"key": "Authorization",
+
 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjUxMTY5NDQ4LCJleHAiOjE2NTM3NjE0NDh9.o5s7LesEQz-R5mlQH_ytn5BTGPYCZpGKmXRbF_12LAI",
+
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
+
 					"raw": "",
+
 					"options": {
 						"raw": {
 							"language": "json"
@@ -292,7 +421,9 @@
 					}
 				},
 				"url": {
+
 					"raw": "http://127.0.0.1:3000/news/14",
+
 					"protocol": "http",
 					"host": [
 						"127",
@@ -303,7 +434,9 @@
 					"port": "3000",
 					"path": [
 						"news",
+
 						"14"
+
 					]
 				}
 			},
