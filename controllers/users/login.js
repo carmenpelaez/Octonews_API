@@ -1,16 +1,16 @@
 const getDB = require("../../database/config");
-const jsonwebtoken = require("jsonwebtoken");
 const { JWTgenerator } = require("../../helpers/JWT-Generator");
+const { generateError } = require("../../helpers/generateError");
 
 async function loginUser(req, res, next) {
   let connection;
   try {
     connection = await getDB();
-    // comprobar que se reciben los datos necesarios
+    // check if we have the required data
     //await loginUserSchema.validateAsync(req.body);
-    const { email, password } = req.body;
 
-    // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
+    const { email, password } = req.body;
+    // Do a query and see if email and password ar correct
     const [dbUser] = await connection.query(
       `
       SELECT id, authenticated
@@ -21,25 +21,12 @@ async function loginUser(req, res, next) {
     );
 
     if (dbUser.length === 0) {
-      console.error("No hay ningún usuario registrado con ese email");
-      res.status(401).send({
-        status: "error",
-        message: "Email o password incorrectas",
-      });
-      // throw generateError(
-      //     "No hay ningún usuario registrado con ese email o la password es incorrecta",
-      //     401
-      // );
+      throw generateError("Email or password incorrect", 401);
     } else if (!dbUser[0].authenticated) {
-      console.error("El usuario está registrado pero no activado");
-      res.status(401).send({
-        status: "error",
-        message: "El usuario está registrado pero no activado",
-      });
-      // throw generateError(
-      //     "El usuario está registrado pero no activado. Por favor revisa tu email y activalo",
-      //     401
-      // );
+      throw generateError(
+        "User is registered but not active. Check your email for activation",
+        401
+      );
     }
 
     const token = await JWTgenerator(dbUser[0].id);

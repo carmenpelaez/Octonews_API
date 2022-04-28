@@ -1,29 +1,39 @@
 require("dotenv").config();
-
+const fileUpload = require("express-fileupload");
 const express = require("express");
 const app = express();
+const { checkErrors } = require("./middlewares/checkErrors");
 
-const createUser = require("./controllers/users/createUser");
-const login = require("./controllers/users/login");
-// const isUser = require("./middlewares/isUser");
+
 const getNews = require("./controllers/news/getNews");
 const voteNews = require("./controllers/news/voteNews");
 
+
+//First middlewares
+//bodyparser
+
 app.use(express.json());
+//formparser
+app.use(fileUpload());
 
-app.post("/users", createUser);
-app.post("/users/login", login);
+//import routes
+app.use(require("./routes/news"));
+app.use(require("./routes/users"));
 
-app.get(
-  "/news/",
-  getNews
-); /* Elimino :date, tengo que hacer esto con queryparams */
+app.get("/news",getNews); /* Elimino :date, tengo que hacer esto con queryparams */
 
 /* Aquí debajo inserto el isAuth como middleware, revisar. */
 app.post("/news/:id_news/votes", voteNews);
 
-const port = process.env.PORT;
 
+
+//Last middlewares
+//Check if an error ocurred and send a response with the error.
+app.use(checkErrors);
+
+
+//Start server
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Lanzado en puerto: ${port}`);
 });

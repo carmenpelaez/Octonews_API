@@ -6,17 +6,16 @@ const isAuth = async (req, res, next) => {
   try {
     const { SECRET } = process.env;
     const { authorization } = req.headers;
-    console.log("paso por el JWT VALIDATE");
 
     if (!authorization) {
-      res.status(403).send({ msg: "Se requiere una cabecera de autorización" });
+      res.status(403).send({ msg: "You need an authorization header" });
     }
     let tokenInfo;
 
     try {
       tokenInfo = await jwt.verify(authorization, SECRET);
     } catch (error) {
-      res.status(403).send({ msg: "El token no es válido" });
+      res.status(403).send({ msg: "Token invalid" });
     }
 
     const { id } = tokenInfo;
