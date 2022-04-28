@@ -1,11 +1,15 @@
 const getDB = require("../../database/config");
 const { generateError } = require("../../helpers/generateError");
 const { processAndSaveImage } = require("../../helpers/processAndSaveImage");
+const { addNewsSchema } = require("../../validators/newsValidator");
 
 const addNews = async (req, res, next) => {
   let connection;
   try {
     connection = await getDB();
+
+    await addNewsSchema.validateAsync(req.body);
+
     const { title, introduction, text, category } = req.body;
 
     //given category name, we search for the id on the categories table
@@ -15,14 +19,20 @@ const addNews = async (req, res, next) => {
               `,
       [category]
     );
+
+    if (resultCategory.length === 0) {
+      throw generateError("This category doesn't exist", 404);
+    }
     const idCategory = resultCategory[0].id;
 
-    //   We process an image if it's uploaded
+    // We process an image if it's uploaded
     let processedImage = [];
     let result;
 
     if (req.files && Object.keys(req.files).length > 0) {
-      for (const [, imageData] of Object.entries(req.files).slice(0, 1)) {
+      const imageData = req.files.image;
+
+      if (imageData.mimetype === "image/png") {
         try {
           processedImage = await processAndSaveImage(imageData);
         } catch (error) {
@@ -31,20 +41,22 @@ const addNews = async (req, res, next) => {
         //Create the news with all the values given
         [result] = await connection.query(
           `
-          INSERT INTO news(title, introduction_text, image, news_text, id_category, creation_date, last_update_date,id_user)
-          VALUES(?,?,?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?)
+          INSERT INTO news(title, introduction_text, image, news_text, creation_date, last_update_date,id_user, id_category)
+          VALUES(?,?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?,?)
             `,
-          [title, introduction, processedImage, text, idCategory, req.user]
+          [title, introduction, processedImage, text, req.user, idCategory]
         );
+      } else {
+        throw generateError("File is not an image.", 403);
       }
     } else {
       //Create the news with all the values given
       [result] = await connection.query(
         `
-              INSERT INTO news(title, introduction_text, news_text, id_category, creation_date, last_update_date,id_user)
-              VALUES(?,?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?)
+              INSERT INTO news(title, introduction_text, news_text, creation_date, last_update_date, id_user,id_category)
+              VALUES(?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?,?)
               `,
-        [title, introduction, text, idCategory, req.user]
+        [title, introduction, text, req.user, idCategory]
       );
     }
 
