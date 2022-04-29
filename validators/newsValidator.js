@@ -57,27 +57,24 @@ const editNewsSchema = joi.object().keys({
     ),
 });
 
-const voteEntrySchema = Joi.object().keys({
-  id_user: Joi.number()
-    .min(1)
-    .error(generateError("El usuario no existe", 400)),
-  vote: Joi.number()
+const voteEntrySchema = joi.object().keys({
+  id_user: joi.number().min(1).error(generateError("User doesn't exist", 400)),
+  vote: joi
+    .number()
     .min(-1)
     .max(1)
     .not(0)
     .required()
     .error(
       generateError(
-        "El campo voto debe existir y ser 1 (like) o -1 (dislike)",
+        "The field 'vote' must exist and be 1 (like) or -1 (dislike)",
         400
       )
     ),
 });
 
-
 module.exports = {
   addNewsSchema,
   editNewsSchema,
-  voteEntrySchema
+  voteEntrySchema,
 };
-

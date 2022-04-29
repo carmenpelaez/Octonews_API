@@ -1,7 +1,7 @@
 const getDB = require("../database/config");
 const { generateError } = require("../helpers/generateError");
 
-//Function that Check if a News exists and if the authorized user can manipulate it
+//Function that checks if a News exists and if the authorized user can manipulate it
 const checkNews = async (req, res, next) => {
   let connection;
   try {
