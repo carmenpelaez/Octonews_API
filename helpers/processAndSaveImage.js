@@ -3,7 +3,7 @@ const path = require("path");
 const sharp = require("sharp");
 const uuid = require("uuid");
 
-// we define the path were we'll upload the images
+// We define the path were we'll upload the images
 const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
 
 const processAndSaveImage = async (uploadedImage) => {
@@ -16,7 +16,7 @@ const processAndSaveImage = async (uploadedImage) => {
   // Get data from image
   const imageInfo = await image.metadata();
 
-  // resize if necessary
+  // Resize if necessary
   if (imageInfo.width > 400) {
     image.resize(400);
   }
@@ -25,7 +25,7 @@ const processAndSaveImage = async (uploadedImage) => {
   const imageFileName = `${uuid.v4()}.jpg`;
   await image.toFile(path.join(imageUploadPath, imageFileName));
 
-  // return new image name
+  // Return new image name
   return imageFileName;
 };
 
