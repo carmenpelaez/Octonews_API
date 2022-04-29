@@ -1,10 +1,12 @@
 const getDB = require("../../database/config");
 const { generateError } = require("../../helpers/generateError");
+const { createUserSchema } = require("../../validators/usersValidators");
 
 async function newUser(req, res, next) {
   let connection;
 
   try {
+    await createUserSchema.validateAsync(req.body);
     connection = await getDB();
 
     const { email, name, password } = req.body;
