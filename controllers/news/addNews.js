@@ -44,7 +44,7 @@ const addNews = async (req, res, next) => {
           INSERT INTO news(title, introduction_text, image, news_text, creation_date, last_update_date,id_user, id_category)
           VALUES(?,?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?,?)
             `,
-          [title, introduction, processedImage, text, req.user, idCategory]
+          [title, introduction, processedImage, text, req.user.id, idCategory]
         );
       } else {
         throw generateError("File is not an image.", 403);
@@ -56,9 +56,16 @@ const addNews = async (req, res, next) => {
               INSERT INTO news(title, introduction_text, news_text, creation_date, last_update_date, id_user,id_category)
               VALUES(?,?,?, UTC_TIMESTAMP, UTC_TIMESTAMP, ?,?)
               `,
-        [title, introduction, text, req.user, idCategory]
+        [title, introduction, text, req.user.id, idCategory]
       );
     }
+
+    //Owner automatically votes himself, so "votes" in DB can be shown correctly.
+    await connection.query(
+      `INSERT INTO news_votes (id_user, id_news, vote, date, lastUpdate)
+       VALUES (?,?,?,UTC_TIMESTAMP, UTC_TIMESTAMP);`,
+      [req.user.id, result.insertId, 1]
+    );
 
     // send result
 

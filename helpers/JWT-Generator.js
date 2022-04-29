@@ -8,7 +8,7 @@ const JWTgenerator = async (id) => {
       id,
     };
 
-    token = await jsonwebtoken.sign(tokenInfo, process.env.SECRET, {
+    token = jsonwebtoken.sign(tokenInfo, process.env.SECRET, {
       expiresIn: "30d",
     });
   } catch (error) {}

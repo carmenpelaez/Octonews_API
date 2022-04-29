@@ -6,13 +6,11 @@ async function getNews(req, res, next) {
 
   try {
     connection = await getDB();
-    console.log(req.query);
-    /* REVISAR SI TODO ESTO SE PUEDE CAMBIAR CON UN SWITCH */
     const { date, category } = req.query;
 
     if (date) {
       const [result] = await connection.query(
-        `SELECT title,introduction_text,news_text,image, COUNT(nv.vote) AS votos
+        `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
        FROM news n
        INNER JOIN news_votes nv ON nv.id_news = n.id
        WHERE n.creation_date = ? ${
@@ -20,7 +18,7 @@ async function getNews(req, res, next) {
            ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
            : ``
        }
-       GROUP BY title 
+       GROUP BY n.id 
        ORDER BY votos DESC; `,
         [date]
       );
@@ -28,31 +26,26 @@ async function getNews(req, res, next) {
       if (result.length === 0) {
         if (category) {
           throw generateError(
-            "No se han encontrado noticias con esta fecha o categoría. Pruebe a cambiar los filtros",
-            409
+            "There is no news in this date and category.",
+            404
           );
         } else {
-          throw generateError(
-            "No se han encontrado noticias con esta fecha. Intente buscar noticias de otro día",
-            409
-          );
+          throw generateError("There is no news in this date", 404);
         }
       }
 
-      return res.send({ status: "OK", noticias: result });
-
-      /* REVISAR SI ESTE ES EL CODIGO DE ERROR CORRECTO */
+      return res.send({ status: "OK", news: result });
     } else {
       const [result] = await connection.query(
-        `SELECT title,introduction_text,news_text,image, COUNT(nv.vote) AS votos
+        `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
      FROM news n
      INNER JOIN news_votes nv ON nv.id_news = n.id
-     WHERE n.creation_date = current_date() ${
+     WHERE n.creation_date > current_date() ${
        category
          ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
          : ``
      }
-     GROUP BY title
+     GROUP BY n.id
      ORDER BY votos DESC; `
       );
 
