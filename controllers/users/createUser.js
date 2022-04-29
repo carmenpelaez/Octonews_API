@@ -1,4 +1,5 @@
 const getDB = require("../../database/config");
+const { generateError } = require("../../helpers/generateError");
 
 async function newUser(req, res, next) {
   let connection;
@@ -32,7 +33,7 @@ async function newUser(req, res, next) {
 
     res.send({
       status: "ok",
-      message: "Usuario registrado.",
+      message: "User registered.",
     });
   } catch (error) {
     next(error);

@@ -23,7 +23,6 @@ const editNews = async (req, res, next) => {
       //Check if it is an image
       if (imageData.mimetype === "image/png") {
         try {
-          console.log(req.news.image);
           //From the the middleware CheckNews
           //Check if the news have an image
           //Delete image on local if there is one

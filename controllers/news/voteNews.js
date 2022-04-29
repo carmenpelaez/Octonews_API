@@ -1,4 +1,5 @@
 const getDB = require("../../database/config");
+const { generateError } = require("../../helpers/generateError");
 const { voteEntrySchema } = require("../../validators/newsValidator");
 
 async function voteNews(req, res, next) {
@@ -11,7 +12,7 @@ async function voteNews(req, res, next) {
 
     const { id_news } = req.params;
     const { vote } = req.body;
-    const id_user = req.user;
+    const id_user = req.user.id;
 
     const [checkIdNews] = await connection.query(
       `SELECT * FROM news WHERE id=?`,
@@ -36,11 +37,10 @@ async function voteNews(req, res, next) {
       const dataOfCheckedVote = resultOfCheckedVote[0];
 
       if (dataOfCheckedVote.vote == vote) {
-        return res.send({
-          status: "40X",
-          message:
-            "Ya has hecho este voto en esta noticia. Puedes modificar tu voto pero no votar más de una vez",
-        });
+        throw generateError(
+          "You can change vote but can't send the same vote.",
+          403
+        );
       }
     } else {
       const [result] = await connection.query(
@@ -49,16 +49,16 @@ async function voteNews(req, res, next) {
         [id_user, id_news, vote]
       );
 
-      return res.send({ status: "OK", data: "Voto enviado con éxito" });
+      return res.send({ status: "OK", data: "Vote sent" });
     }
 
     /* I think the parameters of this "if" are useless, tell me when you guys check up the code */
-    if (checkIdNews.length > 0 || vote > 1 || vote < -1) {
+    if (checkIdNews.length > 0 || vote > 1 || vote > -1) {
       const [updateVote] = await connection.query(
         `UPDATE news_votes SET vote =? WHERE id_user =? AND id_news=?`,
         [vote, id_user, id_news]
       );
-      return res.send({ status: "OK", data: "Voto actualizado con éxito" });
+      return res.send({ status: "OK", data: "Vote sent" });
     }
   } catch (error) {
     next(error);

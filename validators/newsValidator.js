@@ -24,7 +24,7 @@ const addNewsSchema = joi.object().keys({
   text: joi
     .string()
     .min(25)
-    .max(2000)
+    .max(5000)
     .required()
     .error(
       generateError("Must have a text and between 25 and 2000 characters", 400)
@@ -63,7 +63,6 @@ const voteEntrySchema = joi.object().keys({
     .number()
     .min(-1)
     .max(1)
-    .not(0)
     .required()
     .error(
       generateError(

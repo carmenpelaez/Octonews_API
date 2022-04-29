@@ -24,7 +24,7 @@ const checkNews = async (req, res, next) => {
     const [news] = result;
 
     //Then we check if the auth user is the same as the owner of the news
-    if (req.user !== news.id_user) {
+    if (req.user.id !== news.id_user) {
       throw generateError(
         "You have no permission to edit/delete this news",
         403

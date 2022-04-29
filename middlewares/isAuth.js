@@ -1,30 +1,48 @@
 //VALIDATION JWT
 const jwt = require("jsonwebtoken");
+const getDB = require("../database/config");
+const { generateError } = require("../helpers/generateError");
 
 const isAuth = async (req, res, next) => {
+  let connection;
+
   try {
     const { SECRET } = process.env;
     const { authorization } = req.headers;
+    let result;
 
     if (!authorization) {
-      res.status(403).send({ msg: "You need an authorization header" });
+      throw generateError("You need an authorization header", 403);
     }
     let tokenInfo;
 
     try {
-      tokenInfo = await jwt.verify(authorization, SECRET);
+      tokenInfo = jwt.verify(authorization, SECRET);
     } catch (error) {
-      res.status(403).send({ msg: "Token invalid" });
+      throw generateError("Token invalid", 403);
     }
 
-    //TODO: CHECK IF USER EXISTS IN BD AND GIVE req.user all values except password
+    connection = await getDB();
     const { id } = tokenInfo;
-    req.user = id;
+    [result] = await connection.query(
+      "SELECT id, name, email, biography, avatar, creation_date, last_update_date, authenticated FROM users WHERE id = ?;",
+      [id]
+    );
+
+    //Check if user exists.
+    const [user] = result;
+    if (result.length === 0) {
+      throw generateError("User doesn't exists", 404);
+    }
+
+    //We assign all the values from the query to req.user
+    req.user = user;
 
     next();
   } catch (error) {
-    //TODO: CHANGE THIS TO next(error)
-    console.error(error.message);
+    next(error);
+  } finally {
+    if (connection) connection.release();
   }
 };
 
