@@ -1,7 +1,6 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
-const { processAndSaveImage } = require("../../helpers/processAndSaveImage");
-const { addNewsSchema } = require("../../validators/newsValidator");
+const { processAndSaveImage, generateError } = require("../../helpers");
+const { addNewsSchema } = require("../../validators/newsValidators");
 
 const addNews = async (req, res, next) => {
   let connection;

@@ -88,6 +88,129 @@
 			"name": "News",
 			"item": [
 				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "addComment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"comment\":\"hahaha so funny.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/news/2/comment",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"news",
+										"2",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "replyComment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"comment\":\"hahaha so funny.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/news/2/2/reply",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"news",
+										"2",
+										"2",
+										"reply"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "replyComment Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/news/comment/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"news",
+										"comment",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "getNews",
 					"request": {
 						"method": "GET",
@@ -115,7 +238,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/news?date=2022-04-04",
+							"raw": "localhost:3000/news?date=2022-04-29",
 							"host": [
 								"localhost"
 							],
@@ -126,7 +249,7 @@
 							"query": [
 								{
 									"key": "date",
-									"value": "2022-04-04"
+									"value": "2022-04-29"
 								}
 							]
 						}
@@ -163,7 +286,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/news?date=2022-04-04&category=culture",
+							"raw": "localhost:3000/news?date=2022-04-29&category=culture",
 							"host": [
 								"localhost"
 							],
@@ -174,7 +297,7 @@
 							"query": [
 								{
 									"key": "date",
-									"value": "2022-04-04"
+									"value": "2022-04-29"
 								},
 								{
 									"key": "category",

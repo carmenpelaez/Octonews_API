@@ -1,14 +1,13 @@
 const { Router } = require("express");
-const createUser = require("../controllers/users/createUser");
 const editUser = require("../controllers/users/editUser");
-const login = require("../controllers/users/login");
-const { isAuth } = require("../middlewares/isAuth");
+const { isAuth } = require("../middlewares");
 const editUserPassword = require("../controllers/users/editUserPassword");
+const { newUser, loginUser } = require("../controllers");
 
 const router = Router();
 
-router.post("/users", createUser);
-router.post("/users/login", login);
+router.post("/users", newUser);
+router.post("/users/login", loginUser);
 router.put("/users/:id", isAuth, editUser);
 /* router.get("/users/validate/:code", validateUser); */
 router.post("/users/:id/password", isAuth, editUserPassword);

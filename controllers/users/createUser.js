@@ -1,5 +1,5 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
+const { generateError } = require("../../helpers");
 const { createUserSchema } = require("../../validators/usersValidators");
 
 async function newUser(req, res, next) {
@@ -44,4 +44,4 @@ async function newUser(req, res, next) {
   }
 }
 
-module.exports = newUser;
+module.exports = { newUser };
