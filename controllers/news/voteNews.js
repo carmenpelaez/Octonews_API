@@ -1,6 +1,6 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
-const { voteEntrySchema } = require("../../validators/newsValidator");
+const { generateError } = require("../../helpers");
+const { voteEntrySchema } = require("../../validators/newsValidators");
 
 async function voteNews(req, res, next) {
   let connection;
@@ -10,27 +10,15 @@ async function voteNews(req, res, next) {
   try {
     connection = await getDB();
 
-    const { id_news } = req.params;
+    const { idNews } = req.params;
     const { vote } = req.body;
     const id_user = req.user.id;
-
-    const [checkIdNews] = await connection.query(
-      `SELECT * FROM news WHERE id=?`,
-      [id_news]
-    );
-
-    if (checkIdNews.length === 0) {
-      return res.send({
-        status: 404,
-        message: "Lo sentimos, la noticia que quieres votar no existe.",
-      });
-    }
     /* ALL this script checks up if the vote is sending in the req is the same that's already in the DB. If it is sends a error */
 
     const [resultOfCheckedVote] = await connection.query(
       `SELECT id_user, id_news, vote FROM news_votes
         WHERE id_user = ? AND id_news = ?;`,
-      [id_user, id_news]
+      [id_user, idNews]
     );
 
     if (resultOfCheckedVote.length > 0) {
@@ -42,22 +30,18 @@ async function voteNews(req, res, next) {
           403
         );
       }
+      await connection.query(
+        `UPDATE news_votes SET vote =?, lastUpdate = UTC_TIMESTAMP WHERE id_user =? AND id_news=?`,
+        [vote, id_user, idNews]
+      );
+      return res.send({ status: "OK", data: "Vote sent" });
     } else {
-      const [result] = await connection.query(
+      await connection.query(
         `INSERT INTO news_votes (id_user, id_news, vote, date, lastUpdate)
          VALUES (?,?,?,UTC_TIMESTAMP, UTC_TIMESTAMP);`,
-        [id_user, id_news, vote]
+        [id_user, idNews, vote]
       );
 
-      return res.send({ status: "OK", data: "Vote sent" });
-    }
-
-    /* I think the parameters of this "if" are useless, tell me when you guys check up the code */
-    if (checkIdNews.length > 0 || vote > 1 || vote > -1) {
-      const [updateVote] = await connection.query(
-        `UPDATE news_votes SET vote =?, lastUpdate = UTC_TIMESTAMP WHERE id_user =? AND id_news=?`,
-        [vote, id_user, id_news]
-      );
       return res.send({ status: "OK", data: "Vote sent" });
     }
   } catch (error) {
@@ -67,4 +51,4 @@ async function voteNews(req, res, next) {
   }
 }
 
-module.exports = voteNews;
+module.exports = { voteNews };

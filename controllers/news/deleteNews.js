@@ -1,14 +1,17 @@
 const getDB = require("../../database/config");
-const { deleteImage } = require("../../helpers/deleteImage");
+const { deleteImage, generateError } = require("../../helpers");
 
 const deleteNews = async (req, res, next) => {
   let connection;
 
   try {
+    //Check if the auth user is the same as the owner of the news(We get news from isNews middleware)
+    if (req.user.id !== req.news.id_user) {
+      throw generateError("You have no permission to delete this news", 403);
+    }
+
     connection = await getDB();
-
     const { idNews } = req.params;
-
     //From the the middleware CheckNews
     //Check if the news have an image
     //Delete image on local if there is one

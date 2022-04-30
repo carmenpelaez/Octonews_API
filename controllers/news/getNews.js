@@ -1,6 +1,6 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
 const { add, format } = require("date-fns");
+const { generateError } = require("../../helpers");
 
 async function getNews(req, res, next) {
   let connection;
@@ -23,7 +23,7 @@ async function getNews(req, res, next) {
       console.log(currentDatePlusOneMoreDayFormatted);
 
       const [result] = await connection.query(
-        `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
+        `SELECT n.id,title,introduction_text,news_text,image, SUM(nv.vote) AS votos
        FROM news n
        INNER JOIN news_votes nv ON nv.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ? ${
@@ -50,7 +50,7 @@ async function getNews(req, res, next) {
       return res.send({ status: "OK", news: result });
     } else {
       const [result] = await connection.query(
-        `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
+        `SELECT n.id,title,introduction_text,news_text,image, SUM(nv.vote) AS votos
      FROM news n
      INNER JOIN news_votes nv ON nv.id_news = n.id
      WHERE n.creation_date >= current_date() ${
@@ -71,4 +71,4 @@ async function getNews(req, res, next) {
   }
 }
 
-module.exports = getNews;
+module.exports = { getNews };

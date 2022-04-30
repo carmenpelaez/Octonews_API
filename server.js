@@ -1,7 +1,6 @@
 const fileUpload = require("express-fileupload");
 const express = require("express");
-const { checkErrors } = require("./middlewares/checkErrors");
-const { notFound } = require("./middlewares/notFound");
+const { checkErrors, notFound } = require("./middlewares");
 
 require("dotenv").config();
 
