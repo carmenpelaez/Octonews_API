@@ -1,13 +1,19 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
-const { editNewsSchema } = require("../../validators/newsValidator");
-const { deleteImage } = require("../../helpers/deleteImage");
-const { processAndSaveImage } = require("../../helpers/processAndSaveImage");
+const {
+  generateError,
+  deleteImage,
+  processAndSaveImage,
+} = require("../../helpers");
+const { editNewsSchema } = require("../../validators/newsValidators");
 
 const editNews = async (req, res, next) => {
   let connection;
 
   try {
+    //Check if the auth user is the same as the owner of the news(We get news from isNews middleware)
+    if (req.user.id !== req.news.id_user) {
+      throw generateError("You have no permission to edit this news", 403);
+    }
     connection = await getDB();
 
     //Check if the req params are correct.

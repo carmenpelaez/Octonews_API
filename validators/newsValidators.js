@@ -8,7 +8,10 @@ const addNewsSchema = joi.object().keys({
     .max(300)
     .required()
     .error(
-      generateError("Must have a title and between 10 and 300 characters", 400)
+      generateError(
+        "Must have a 'title' and between 10 and 300 characters",
+        400
+      )
     ),
   introduction: joi
     .string()
@@ -17,7 +20,7 @@ const addNewsSchema = joi.object().keys({
     .required()
     .error(
       generateError(
-        "Must have a description and between 10 and 500 characters",
+        "Must have a 'introduction' and between 10 and 500 characters",
         400
       )
     ),
@@ -27,12 +30,15 @@ const addNewsSchema = joi.object().keys({
     .max(5000)
     .required()
     .error(
-      generateError("Must have a text and between 25 and 2000 characters", 400)
+      generateError(
+        "Must have a 'text' and between 25 and 2000 characters",
+        400
+      )
     ),
   category: joi
     .string()
     .required()
-    .error(generateError("Must have a category", 400)),
+    .error(generateError("Must have a 'category'", 400)),
 });
 
 const editNewsSchema = joi.object().keys({
@@ -43,7 +49,7 @@ const editNewsSchema = joi.object().keys({
     .required()
     .error(
       generateError(
-        "Must have a description and between 10 and 500 characters",
+        "Must have a 'introduction' and between 10 and 500 characters",
         400
       )
     ),
@@ -53,7 +59,10 @@ const editNewsSchema = joi.object().keys({
     .max(2000)
     .required()
     .error(
-      generateError("Must have a text and between 25 and 2000 characters", 400)
+      generateError(
+        "Must have a 'text' and between 25 and 2000 characters",
+        400
+      )
     ),
 });
 
@@ -66,7 +75,21 @@ const voteEntrySchema = joi.object().keys({
     .required()
     .error(
       generateError(
-        "The field 'vote' must exist and be 1 (like) or -1 (dislike)",
+        "The field 'vote' must exist and be 1 (like), 0 (neutral) or -1 (dislike)",
+        400
+      )
+    ),
+});
+
+const addCommentSchema = joi.object().keys({
+  comment: joi
+    .string()
+    .min(1)
+    .max(2000)
+    .required()
+    .error(
+      generateError(
+        "Must write a 'comment' in a range of 1 to 2000 characters",
         400
       )
     ),
@@ -76,4 +99,5 @@ module.exports = {
   addNewsSchema,
   editNewsSchema,
   voteEntrySchema,
+  addCommentSchema,
 };

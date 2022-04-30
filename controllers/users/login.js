@@ -1,6 +1,5 @@
 const getDB = require("../../database/config");
-const { JWTgenerator } = require("../../helpers/JWT-Generator");
-const { generateError } = require("../../helpers/generateError");
+const { JWTgenerator, generateError } = require("../../helpers");
 
 async function loginUser(req, res, next) {
   let connection;
@@ -45,4 +44,4 @@ async function loginUser(req, res, next) {
   }
 }
 
-module.exports = loginUser;
+module.exports = { loginUser };
