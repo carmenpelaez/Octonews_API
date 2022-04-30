@@ -1,5 +1,6 @@
 const getDB = require("../../database/config");
 const { generateError } = require("../../helpers/generateError");
+const { add, format } = require("date-fns");
 
 async function getNews(req, res, next) {
   let connection;
@@ -9,18 +10,30 @@ async function getNews(req, res, next) {
     const { date, category } = req.query;
 
     if (date) {
+      let currentDate = new Date(date);
+      let currentDatePlusOneMoreDay = add(currentDate, {
+        days: 1,
+      }); /* Cambiar a nombres mas cortos */
+      let currentDatePlusOneMoreDayFormatted = format(
+        currentDatePlusOneMoreDay,
+        "yyyy/MM/dd"
+      );
+
+      console.log(date);
+      console.log(currentDatePlusOneMoreDayFormatted);
+
       const [result] = await connection.query(
         `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
        FROM news n
        INNER JOIN news_votes nv ON nv.id_news = n.id
-       WHERE n.creation_date = ? ${
+       WHERE n.creation_date BETWEEN ? AND ? ${
          category
            ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
            : ``
        }
        GROUP BY n.id 
        ORDER BY votos DESC; `,
-        [date]
+        [date, currentDatePlusOneMoreDayFormatted]
       );
 
       if (result.length === 0) {
@@ -40,7 +53,7 @@ async function getNews(req, res, next) {
         `SELECT title,introduction_text,news_text,image, SUM(nv.vote) AS votos
      FROM news n
      INNER JOIN news_votes nv ON nv.id_news = n.id
-     WHERE n.creation_date > current_date() ${
+     WHERE n.creation_date >= current_date() ${
        category
          ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
          : ``

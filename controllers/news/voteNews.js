@@ -45,7 +45,7 @@ async function voteNews(req, res, next) {
     } else {
       const [result] = await connection.query(
         `INSERT INTO news_votes (id_user, id_news, vote, date, lastUpdate)
-         VALUES (?,?,?,current_timestamp(), current_timestamp());`,
+         VALUES (?,?,?,UTC_TIMESTAMP, UTC_TIMESTAMP);`,
         [id_user, id_news, vote]
       );
 
@@ -55,7 +55,7 @@ async function voteNews(req, res, next) {
     /* I think the parameters of this "if" are useless, tell me when you guys check up the code */
     if (checkIdNews.length > 0 || vote > 1 || vote > -1) {
       const [updateVote] = await connection.query(
-        `UPDATE news_votes SET vote =? WHERE id_user =? AND id_news=?`,
+        `UPDATE news_votes SET vote =?, lastUpdate = UTC_TIMESTAMP WHERE id_user =? AND id_news=?`,
         [vote, id_user, id_news]
       );
       return res.send({ status: "OK", data: "Vote sent" });
