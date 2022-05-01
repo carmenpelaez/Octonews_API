@@ -1,9 +1,12 @@
 const getDB = require("../../database/config");
 const {
-  /* processAndSaveImage,  */
+  processAndSaveImage,
   generateError,
-} = require("../../helpers/generateError");
+  deleteImage,
+} = require("../../helpers");
 const { editUserSchema } = require("../../validators/usersValidators");
+const sendMail = require("../../helpers/sendMail");
+const randomString = require("../../helpers/randomString");
 
 async function editUser(req, res, next) {
   let connection;
@@ -14,7 +17,7 @@ async function editUser(req, res, next) {
     await editUserSchema.validateAsync(req.body);
 
     const { id } = req.params;
-    const { email, name, biography, avatar } = req.body;
+    const { email, name, biography } = req.body;
 
     // Check if user exist
     const [currentUser] = await connection.query(
@@ -30,88 +33,119 @@ async function editUser(req, res, next) {
       throw generateError(`User with id ${id} doesn't exist`, 404);
     }
 
-    // Si mandamos imagen guardar avatar
-
-    /*    let savedFileName;
+    let savedFileName;
 
     if (req.files && req.files.avatar) {
-      try {
-        // Procesar y guardar imagen
-        savedFileName = await processAndSaveImage(req.files.avatar);
-      } catch (error) {
-        throw generateError(
-          "No se pudo procesar la imagen. Inténtalo de nuevo",
-          400
-        );
+      if (req.files.avatar.mimetype.includes("image")) {
+        try {
+          //From the the middleware
+          //Check if the user has an image
+          //Delete image on local if there is one
+          if (currentUser[0].avatar) {
+            await deleteImage(currentUser[0].avatar, "users");
+          }
+          //process and save image on local
+          savedFileName = await processAndSaveImage(
+            req.files.avatar,
+            400,
+            "users"
+          );
+        } catch (error) {
+          throw generateError("Couldn't process the image. Try again.", 400);
+        }
       }
     } else {
-      savedFileName = currentUser[0].image;
-    } */
-    savedFileName = currentUser[0].image;
-    // Si el email es diferente al actual comprobar que no existe en la base de datos
-    if (email !== currentUser[0].email) {
+      savedFileName = currentUser[0].avatar;
+    }
+
+    /* If user provides an email to update, this will be the function running */
+
+    // If email it's different from the current one check if it doesn't exist on database
+    if (email !== currentUser[0].email && email !== undefined) {
       const [existingEmail] = await connection.query(
         `
-        SELECT id
-        FROM users
-        WHERE email=? 
-      `,
+          SELECT id
+          FROM users
+          WHERE email=? 
+        `,
         [email]
       );
-
+      console.log("HOLAAAAAAAAA");
       if (existingEmail.length > 0) {
         throw generateError("An user with this email already exists", 403);
       }
 
-      // Verificamos de nuevo el email recibido
+      // We verify the new received email
       const registrationCode = randomString(40);
       const validationURL = `${process.env.PUBLIC_HOST}/users/validate/${registrationCode}`;
 
-      //Enviamos la url anterior por mail
+      //We send previous url via email
       try {
-        await sendMail({
+        await sendMail(
           email,
-          title:
-            "You changed your user info on Octonews, please validate the account again.",
-          content: `To validate your new email go to Octonews_API clicking here: ${validationURL}`,
-        });
+          "You changed your user info on Octonews, please validate the account again.",
+          `To validate your new email go to Octonews_API clicking here: ${validationURL}`
+        );
       } catch (error) {
-        throw generateError("Error en el envío de mail", 500);
+        throw generateError("Error sending the email", 500);
       }
-
       await connection.query(
         `
-        UPDATE users 
-        SET name=?, email=?, ${biography ? `biography="${biography},")` : ``}  
-        ${
-          avatar ? `avatar = "${avatar}"` : ``
-        }  last_update_date=UTC_TIMESTAMP, lastAuthUpdate=UTC_TIMESTAMP, authenticated=0, registrationCode=?, image=?
-        WHERE id=?
-      `,
-        [name, email, registrationCode, savedFileName, id]
+          UPDATE users 
+          SET 
+          ${name ? `name="${name}",` : ``}
+          email=?, 
+          ${biography ? `biography="${biography}",` : ``}  
+          ${req.files.avatar ? `avatar = "${savedFileName}",` : ``}  
+          last_update_date=UTC_TIMESTAMP, authenticated=0, registrationCode=?
+          WHERE id=?
+        `,
+        [email, registrationCode, id]
       );
 
-      // Dar una respuesta
       res.send({
         status: "ok",
         message: "User updated: Check your email to activate it again.",
       });
     } else {
-      // Actualizar usuario en la base de datos
-      await connection.query(
-        ` UPDATE users 
-      SET name=?, email=?, ${biography ? `biography="${biography}",` : ``}  
-      ${avatar ? `avatar = "${avatar}",` : ``} last_update_date=UTC_TIMESTAMP
-      WHERE id=?
-    `,
-        [name, email, /* savedFileName, */ id]
-      );
+      /* If user doesn't provide any email to update this will be the function running */
+      // Update user on database
+      /* If user sends an avatar file it goes through here, if not, it will go through the else */
+      if (req.files) {
+        await connection.query(
+          ` UPDATE users 
+       SET
+        ${name ? `name="${name}",` : ``}
+        ${email ? `email="${email}",` : ``}
+        ${biography ? `biography="${biography}",` : ``}  
+        ${req.files.avatar ? `avatar = "${savedFileName}",` : ``} 
+        last_update_date=UTC_TIMESTAMP
+        WHERE id=?
+         `,
+          [id]
+        );
 
-      // Dar una respuesta
-      res.send({
-        status: "ok",
-        message: "User updated",
-      });
+        res.send({
+          status: "ok",
+          message: "User updated",
+        });
+      } else {
+        await connection.query(
+          ` UPDATE users 
+       SET
+        ${name ? `name="${name}",` : ``}
+        ${email ? `email="${email}",` : ``}
+        ${biography ? `biography="${biography}",` : ``}  
+        last_update_date=UTC_TIMESTAMP
+        WHERE id=?
+         `,
+          [id]
+        );
+        res.send({
+          status: "ok",
+          message: "User updated",
+        });
+      }
     }
   } catch (error) {
     next(error);

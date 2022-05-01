@@ -1,6 +1,11 @@
 //Users controllers
 const createUser = require("../controllers/users/createUser");
+const editUser = require("../controllers/users/editUser");
+const editUserPassword = require("../controllers/users/editUserPassword");
 const login = require("../controllers/users/login");
+const recoverUserPassword = require("../controllers/users/recoverUserPassword");
+const resetPassword = require("../controllers/users/resetPassword");
+const validateUser = require("../controllers/users/validateUser");
 //News controllers
 const addNews = require("../controllers/news/addNews");
 const deleteNews = require("../controllers/news/deleteNews");
@@ -14,7 +19,12 @@ const replyComment = require("../controllers/news/comments/replyComment");
 
 module.exports = {
   ...createUser,
+  ...editUser,
+  ...editUserPassword,
   ...login,
+  ...recoverUserPassword,
+  ...resetPassword,
+  ...validateUser,
   ...addNews,
   ...deleteNews,
   ...editNews,

@@ -4,12 +4,11 @@ const sharp = require("sharp");
 const uuid = require("uuid");
 
 // We define the path were we'll upload the images
-const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
 
-const processAndSaveImage = async (uploadedImage) => {
+const processAndSaveImage = async (uploadedImage, resize, folder) => {
+  const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR, folder);
   // Make dir
   await fs.mkdir(imageUploadPath, { recursive: true });
-
   // Read image uploaded
   const image = sharp(uploadedImage.data);
 
@@ -17,8 +16,8 @@ const processAndSaveImage = async (uploadedImage) => {
   const imageInfo = await image.metadata();
 
   // Resize if necessary
-  if (imageInfo.width > 400) {
-    image.resize(400);
+  if (imageInfo.width > resize) {
+    image.resize(resize);
   }
 
   // Save image on directory wit a new name

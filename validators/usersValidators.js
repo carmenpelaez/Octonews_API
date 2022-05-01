@@ -79,8 +79,41 @@ const editUserPasswordSchema = joi.object().keys({
     ),
 });
 
+const recoverUserPasswordSchema = joi.object().keys({
+  email: joi
+    .string()
+    .email()
+    .required()
+    .error(generateError("The field email must contain a valid email", 400)),
+});
+
+const resetUserPasswordSchema = joi.object().keys({
+  recoverCode: joi
+    .string()
+    .length(40)
+    .required()
+    .error(
+      generateError(
+        "The field recoverCode must exist and contain 40 characters",
+        400
+      )
+    ),
+  newPassword: joi
+    .string()
+    .min(8)
+    .required()
+    .error(
+      generateError(
+        "The field newPassword must exist, and have more than 8 characters",
+        400
+      )
+    ),
+});
+
 module.exports = {
   createUserSchema,
   editUserSchema,
   editUserPasswordSchema,
+  recoverUserPasswordSchema,
+  resetUserPasswordSchema,
 };
