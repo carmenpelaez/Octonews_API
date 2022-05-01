@@ -27,7 +27,7 @@ const editNews = async (req, res, next) => {
       const imageData = req.files.image;
 
       //Check if it is an image
-      if (imageData.mimetype.includes(image)) {
+      if (imageData.mimetype.includes("image")) {
         try {
           //From the the middleware CheckNews
           //Check if the news have an image

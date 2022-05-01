@@ -62,7 +62,7 @@ const editUserPasswordSchema = joi.object().keys({
     .required()
     .error(
       generateError(
-        "The field old-password must exist and contain more than 8 characters",
+        "The field oldPassword must exist and contain more than 8 characters",
         400
       )
     ),
@@ -73,7 +73,7 @@ const editUserPasswordSchema = joi.object().keys({
     .invalid(joi.ref("oldPassword"))
     .error(
       generateError(
-        "The field new-password must exist, be a different password from the old-password and contain more than 8 characters",
+        "The field newPassword must exist, be a different password from the old-password and contain more than 8 characters",
         400
       )
     ),

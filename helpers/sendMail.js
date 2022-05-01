@@ -23,4 +23,4 @@ async function sendMail(email, title, content) {
   await sendgrid.send(message);
 }
 
-module.exports = sendMail;
+module.exports = { sendMail };

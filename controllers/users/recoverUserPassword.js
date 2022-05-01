@@ -1,7 +1,5 @@
 const getDB = require("../../database/config");
-const sendMail = require("../../helpers/sendMail");
-const randomString = require("../../helpers/randomString");
-const { generateError } = require("../../helpers");
+const { generateError, sendMail, randomString } = require("../../helpers");
 
 const {
   recoverUserPasswordSchema,
@@ -53,7 +51,7 @@ async function recoverUserPassword(req, res, next) {
         "Your password reset code.",
         `Someone requested to recover your password. This is your recovery code you have to use:
           ${recoverCode} 
-            <p>If it wasnt you the one to ask for this recovery please ignore this email. Nothing changed.</p>
+            <p>If it wasn't you the one to ask for this recovery please ignore this email. Nothing changed.</p>
         `
       );
     } catch (error) {
@@ -72,4 +70,4 @@ async function recoverUserPassword(req, res, next) {
   }
 }
 
-module.exports = recoverUserPassword;
+module.exports = { recoverUserPassword };

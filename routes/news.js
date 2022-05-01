@@ -9,6 +9,7 @@ const {
   addComment,
   replyComment,
   deleteComment,
+  getComments,
 } = require("../controllers/index");
 
 const router = Router();
@@ -21,6 +22,7 @@ router.put("/news/:idNews", [isAuth, isNews], editNews);
 router.delete("/news/:idNews", [isAuth, isNews], deleteNews);
 
 // News/comments Endpoints
+router.get("/news/:idNews/comments", [isNews], getComments);
 router.post("/news/:idNews/comment", [isAuth, isNews], addComment);
 router.post(
   "/news/:idNews/:idComment/reply",

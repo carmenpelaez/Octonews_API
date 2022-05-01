@@ -24,6 +24,9 @@ Rename "example.env" to ".env". Now fill every enviromental variable with what y
 
 ```cmd
 PORT=3000
+SENDGRID_KEY=SG.******
+SENDGRID_FROM=yourmailboundtosengrid@email.com
+PUBLIC_HOST=http://localhost:3000
 MYSQL_HOST=localhost
 MYSQL_USER=demo_user
 MYSQL_PASSWORD=12345
@@ -32,11 +35,13 @@ UPLOADS_DIR=public/images
 SECRET=secret
 ```
 
+For sending mails you will need to have a [Sendgrid](https://sendgrid.com/) account in order to work, there you will setup an API KEY and bound an email.
+
 ## - DATABASE (MySQL)
 
-Create a database MySQL called the same as the enviromental variable MYSQL_DATABASE name you have chosen in your file .env.
+Import the database.sql located in the folder "data" or copy and paste the code inside it on your MYSQL workbench or terminal. This will create a database called octonews with all tables and entries for testing.
 
-Then import the database.sql located in the folder "data" or copy and paste the code inside it on your MYSQL workbench or terminal.
+Don't forget to add in MYSQL_DATABASE on the .env files the name "octonews".
 
 # INITIALIZATION
 
