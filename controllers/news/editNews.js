@@ -27,16 +27,16 @@ const editNews = async (req, res, next) => {
       const imageData = req.files.image;
 
       //Check if it is an image
-      if (imageData.mimetype === "image/png") {
+      if (imageData.mimetype.includes(image)) {
         try {
           //From the the middleware CheckNews
           //Check if the news have an image
           //Delete image on local if there is one
           if (req.news.image) {
-            await deleteImage(req.news.image);
+            await deleteImage(req.news.image, "news");
           }
           //process and save image on local
-          processedImage = await processAndSaveImage(imageData);
+          processedImage = await processAndSaveImage(imageData, 800, "news");
         } catch (error) {
           throw generateError("Couldn't process the image. Try again.", 400);
         }

@@ -16,7 +16,7 @@ const deleteNews = async (req, res, next) => {
     //Check if the news have an image
     //Delete image on local if there is one
     if (req.news.image) {
-      await deleteImage(req.news.image);
+      await deleteImage(req.news.image, "news");
     }
 
     //We delete the news
