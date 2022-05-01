@@ -31,7 +31,7 @@ const addNews = async (req, res, next) => {
     if (req.files && Object.keys(req.files).length > 0) {
       const imageData = req.files.image;
 
-      if (imageData.mimetype.includes(image)) {
+      if (imageData.mimetype.includes("image")) {
         try {
           processedImage = await processAndSaveImage(imageData, 800, "news");
         } catch (error) {

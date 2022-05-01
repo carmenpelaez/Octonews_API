@@ -19,9 +19,6 @@ async function getNews(req, res, next) {
         "yyyy/MM/dd"
       );
 
-      console.log(date);
-      console.log(currentDatePlusOneMoreDayFormatted);
-
       const [result] = await connection.query(
         `SELECT n.id,title,introduction_text,news_text,image, SUM(nv.vote) AS votos
        FROM news n

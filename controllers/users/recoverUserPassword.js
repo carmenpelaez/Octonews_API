@@ -1,7 +1,5 @@
 const getDB = require("../../database/config");
-const sendMail = require("../../helpers/sendMail");
-const randomString = require("../../helpers/randomString");
-const { generateError } = require("../../helpers");
+const { generateError, sendMail, randomString } = require("../../helpers");
 
 const {
   recoverUserPasswordSchema,
@@ -72,4 +70,4 @@ async function recoverUserPassword(req, res, next) {
   }
 }
 
-module.exports = recoverUserPassword;
+module.exports = { recoverUserPassword };

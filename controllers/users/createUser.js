@@ -1,8 +1,6 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers");
+const { generateError, sendMail, randomString } = require("../../helpers");
 const { createUserSchema } = require("../../validators/usersValidators");
-const sendMail = require("../../helpers/sendMail");
-const randomString = require("../../helpers/randomString");
 
 async function newUser(req, res, next) {
   let connection;
@@ -12,7 +10,6 @@ async function newUser(req, res, next) {
     connection = await getDB();
 
     const { email, name, password } = req.body;
-    console.log(email);
     // Check there is no other user with dame email on BD.
     const [existingUser] = await connection.query(
       `
@@ -38,9 +35,7 @@ async function newUser(req, res, next) {
         `To validate your user account in Octonews click here: ${validationURL}`
       );
     } catch (error) {
-      /* throw generateError("Error sending the email", 500); */
-      console.log(error.message);
-      throw error;
+      throw generateError("Error sending the email", 500);
     }
 
     /* This creates an user on the database, unauthenticated. It will authenticated in "validateUser" */
@@ -54,7 +49,7 @@ async function newUser(req, res, next) {
 
     res.send({
       status: "ok",
-      message: "User registered.",
+      message: "User registered. Check your email to activate the account",
     });
   } catch (error) {
     next(error);

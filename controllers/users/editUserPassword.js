@@ -48,4 +48,4 @@ async function editUserPassword(req, res, next) {
   }
 }
 
-module.exports = editUserPassword;
+module.exports = { editUserPassword };

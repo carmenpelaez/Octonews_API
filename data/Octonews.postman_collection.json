@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"ste@gmail.com\",\n    \"name\": \"Stefano\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"email\": \"stefano@gmail.com\",\n    \"name\": \"Stefano\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,6 +40,59 @@
 					"response": []
 				},
 				{
+					"name": "validateUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/validate/0b49ebcd416df84e96a7a4c82ce41a02cb7e4274",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"validate",
+								"0b49ebcd416df84e96a7a4c82ce41a02cb7e4274"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recoverCode\": \"b756ad22fffc1c16233279dea032789d35f3a1a4\",\r\n    \"newPassword\": \"asdasdasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "login",
 					"event": [
 						{
@@ -57,7 +110,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"ste@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"email\": \"stefano@gmail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,6 +134,121 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "editUserPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"12345678\",\r\n    \"newPassword\":\"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/3/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"3",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recoverUserPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"stefano@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/recover-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"recover-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "stefano@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Stefano",
+									"type": "text"
+								},
+								{
+									"key": "biography",
+									"value": "profesor",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/D:/Edu/img15.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -90,6 +258,49 @@
 				{
 					"name": "Comments",
 					"item": [
+						{
+							"name": "getComments",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/news/1/comments",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"news",
+										"1",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "addComment",
 							"request": {
@@ -103,7 +314,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"comment\":\"hahaha so funny.\"\n}",
+									"raw": "{\n    \"comment\":\"This is another comment wooo\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -111,7 +322,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/2/comment",
+									"raw": "http://127.0.0.1:3000/news/1/comment",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -122,7 +333,7 @@
 									"port": "3000",
 									"path": [
 										"news",
-										"2",
+										"1",
 										"comment"
 									]
 								}
@@ -142,7 +353,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"comment\":\"hahaha so funny.\"\n}",
+									"raw": "{\n    \"comment\":\"This is a reply comment hehe\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -150,7 +361,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/2/2/reply",
+									"raw": "http://127.0.0.1:3000/news/1/2/reply",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -161,7 +372,7 @@
 									"port": "3000",
 									"path": [
 										"news",
-										"2",
+										"1",
 										"2",
 										"reply"
 									]
@@ -170,7 +381,7 @@
 							"response": []
 						},
 						{
-							"name": "replyComment Copy",
+							"name": "deleteComment",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -190,7 +401,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/comment/2",
+									"raw": "http://127.0.0.1:3000/news/1/2",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -201,7 +412,7 @@
 									"port": "3000",
 									"path": [
 										"news",
-										"comment",
+										"1",
 										"2"
 									]
 								}
@@ -568,6 +779,26 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [

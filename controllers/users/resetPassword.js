@@ -1,8 +1,8 @@
 const getDB = require("../../database/config");
-const { generateError } = require("../../helpers/generateError");
+const { generateError } = require("../../helpers");
 const { resetUserPasswordSchema } = require("../../validators/usersValidators");
 
-async function resetUserPassword(req, res, next) {
+async function resetPassword(req, res, next) {
   let connection;
 
   try {
@@ -50,4 +50,4 @@ async function resetUserPassword(req, res, next) {
   }
 }
 
-module.exports = resetUserPassword;
+module.exports = { resetPassword };

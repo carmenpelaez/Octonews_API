@@ -16,6 +16,7 @@ const voteNews = require("../controllers/news/voteNews");
 const addComment = require("../controllers/news/comments/addComment");
 const deleteComment = require("../controllers/news/comments/deleteComment");
 const replyComment = require("../controllers/news/comments/replyComment");
+const getComments = require("../controllers/news/comments/getComments");
 
 module.exports = {
   ...createUser,
@@ -33,4 +34,5 @@ module.exports = {
   ...addComment,
   ...deleteComment,
   ...replyComment,
+  ...getComments,
 };
