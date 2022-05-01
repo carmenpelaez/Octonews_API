@@ -51,7 +51,7 @@ async function recoverUserPassword(req, res, next) {
         "Your password reset code.",
         `Someone requested to recover your password. This is your recovery code you have to use:
           ${recoverCode} 
-            <p>If it wasnt you the one to ask for this recovery please ignore this email. Nothing changed.</p>
+            <p>If it wasn't you the one to ask for this recovery please ignore this email. Nothing changed.</p>
         `
       );
     } catch (error) {

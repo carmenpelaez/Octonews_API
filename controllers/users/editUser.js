@@ -18,7 +18,6 @@ async function editUser(req, res, next) {
 
     const { id } = req.params;
     const { email, name, biography } = req.body;
-    console.log(req.user);
 
     if (id != req.user.id) {
       throw generateError("You can't edit another user", 403);
@@ -40,7 +39,6 @@ async function editUser(req, res, next) {
           //From the the middleware
           //Check if the user has an image
           //Delete image on local if there is one
-          console.log(req.user.avatar);
           if (req.user.avatar) {
             await deleteImage(req.user.avatar, "users");
           }
@@ -109,7 +107,6 @@ async function editUser(req, res, next) {
       // Update user on database
       /* If user sends an avatar file it goes through here, if not, it will go through the else */
       if (req.files) {
-        console.log("lol");
         await connection.query(
           ` UPDATE users SET ${name ? `name="${name}",` : ``} ${
             email ? `email="${email}",` : ``
