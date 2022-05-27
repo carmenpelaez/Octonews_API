@@ -1,12 +1,17 @@
 const fileUpload = require("express-fileupload");
 const express = require("express");
 const { checkErrors, notFound } = require("./middlewares");
-
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 
 //First middlewares
+
+//CORS
+
+app.use(cors());
+
 //bodyparser
 
 app.use(express.json());
