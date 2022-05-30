@@ -33,9 +33,7 @@ async function loginUser(req, res, next) {
     // Devolver el token
     res.send({
       status: "ok",
-      data: {
-        token,
-      },
+      data: token,
     });
   } catch (error) {
     next(error);
