@@ -9,14 +9,13 @@ const app = express();
 //First middlewares
 
 //CORS
-
 app.use(cors());
-
 //bodyparser
-
 app.use(express.json());
 //formparser
 app.use(fileUpload());
+//Serve all static files in public directory
+app.use(express.static("public"));
 
 //import routes
 app.use(require("./routes/news"));
