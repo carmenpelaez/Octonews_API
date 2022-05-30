@@ -39,7 +39,7 @@ async function editUserPassword(req, res, next) {
 
     res.send({
       status: "ok",
-      message: "Password updated",
+      data: "Password updated",
     });
   } catch (error) {
     next(error);

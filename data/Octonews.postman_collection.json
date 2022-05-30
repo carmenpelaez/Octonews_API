@@ -473,18 +473,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/news?category=culture",
+							"raw": "localhost:4000/news?category=Culture",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news"
 							],
 							"query": [
 								{
 									"key": "category",
-									"value": "culture"
+									"value": "Culture"
 								}
 							]
 						}
@@ -773,6 +773,33 @@
 							"path": [
 								"news",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "getCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/categories",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"categories"
 							]
 						}
 					},

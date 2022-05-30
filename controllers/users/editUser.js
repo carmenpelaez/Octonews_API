@@ -100,7 +100,7 @@ async function editUser(req, res, next) {
 
       res.send({
         status: "ok",
-        message: "User updated: Check your email to activate it again.",
+        data: "User updated: Check your email to activate it again.",
       });
     } else {
       /* If user doesn't provide any email to update this will be the function running */
@@ -118,7 +118,7 @@ async function editUser(req, res, next) {
 
         res.send({
           status: "ok",
-          message: "User updated",
+          data: "User updated",
         });
       } else {
         await connection.query(
@@ -134,7 +134,7 @@ async function editUser(req, res, next) {
         );
         res.send({
           status: "ok",
-          message: "User updated",
+          data: "User updated",
         });
       }
     }

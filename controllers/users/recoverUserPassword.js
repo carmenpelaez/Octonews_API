@@ -60,8 +60,7 @@ async function recoverUserPassword(req, res, next) {
 
     res.send({
       status: "ok",
-      message:
-        "An email with instructions was sent to your account associated with your user.",
+      data: "An email with instructions was sent to your account associated with your user.",
     });
   } catch (error) {
     next(error);

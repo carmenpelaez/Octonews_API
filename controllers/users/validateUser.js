@@ -34,7 +34,7 @@ async function validateUser(req, res, next) {
 
     res.send({
       status: "ok",
-      message: `Now you can log in with your mail ${result[0].email} and your password`,
+      data: `Now you can log in with your mail ${result[0].email} and your password`,
     });
   } catch (error) {
     next(error);
