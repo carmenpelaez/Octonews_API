@@ -73,7 +73,6 @@ async function getNews(req, res, next) {
           `SELECT name from users WHERE id = ?;`,
           [result[i].id_user]
         );
-        console.log(user[0].name);
         result[i].user_name = user[0].name;
       }
 
