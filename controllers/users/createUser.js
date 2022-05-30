@@ -49,7 +49,7 @@ async function newUser(req, res, next) {
 
     res.send({
       status: "ok",
-      message: "User registered. Check your email to activate the account",
+      data: "User registered. Check your email to activate the account",
     });
   } catch (error) {
     next(error);

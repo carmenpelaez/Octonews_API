@@ -23,7 +23,7 @@ const deleteComment = async (req, res, next) => {
 
     res.send({
       status: "ok",
-      message: "Comment deleted.",
+      data: "Comment deleted.",
     });
   } catch (error) {
     //if there is an error, we send it to the next middleware/function

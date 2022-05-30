@@ -29,7 +29,7 @@ const deleteNews = async (req, res, next) => {
 
     res.send({
       status: "ok",
-      message: "News deleted.",
+      data: "News deleted.",
     });
   } catch (error) {
     //if there is an error, we send it to the next middleware/function

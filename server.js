@@ -21,6 +21,7 @@ app.use(fileUpload());
 //import routes
 app.use(require("./routes/news"));
 app.use(require("./routes/users"));
+app.use(require("./routes/categories"));
 
 //Last middlewares
 //Check if an error ocurred and send a response with the error.

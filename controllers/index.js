@@ -17,6 +17,8 @@ const addComment = require("../controllers/news/comments/addComment");
 const deleteComment = require("../controllers/news/comments/deleteComment");
 const replyComment = require("../controllers/news/comments/replyComment");
 const getComments = require("../controllers/news/comments/getComments");
+//Categories controllers
+const getCategories = require("../controllers/categories/getCategories");
 
 module.exports = {
   ...createUser,
@@ -35,4 +37,5 @@ module.exports = {
   ...deleteComment,
   ...replyComment,
   ...getComments,
+  ...getCategories,
 };

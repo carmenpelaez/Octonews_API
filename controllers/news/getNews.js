@@ -20,7 +20,7 @@ async function getNews(req, res, next) {
       );
 
       const [result] = await connection.query(
-        `SELECT n.id,title,introduction_text,news_text,image, SUM(nv.vote) AS votos
+        `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
        FROM news n
        INNER JOIN news_votes nv ON nv.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ? ${
@@ -29,7 +29,7 @@ async function getNews(req, res, next) {
            : ``
        }
        GROUP BY n.id 
-       ORDER BY votos DESC; `,
+       ORDER BY n.creation_date DESC; `,
         [date, currentDatePlusOneMoreDayFormatted]
       );
 
@@ -44,22 +44,40 @@ async function getNews(req, res, next) {
         }
       }
 
-      return res.send({ status: "OK", news: result });
+      for (let i = 0; i < result.length; i++) {
+        const [user] = await connection.query(
+          `SELECT name from users WHERE id = ?;`,
+          [result[i].id_user]
+        );
+        console.log(user[0].name);
+        result[i].user_name = user[0].name;
+      }
+
+      return res.send({ status: "OK", data: result });
     } else {
       const [result] = await connection.query(
-        `SELECT n.id,title,introduction_text,news_text,image, SUM(nv.vote) AS votos
+        `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
      FROM news n
      INNER JOIN news_votes nv ON nv.id_news = n.id
-     WHERE n.creation_date >= current_date() ${
+     ${
        category
-         ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
+         ? `WHERE id_category =(SELECT id FROM categories WHERE name="${category}")`
          : ``
      }
      GROUP BY n.id
-     ORDER BY votos DESC; `
+     ORDER BY n.creation_date DESC; `
       );
 
-      return res.send({ status: "OK", noticias: result });
+      for (let i = 0; i < result.length; i++) {
+        const [user] = await connection.query(
+          `SELECT name from users WHERE id = ?;`,
+          [result[i].id_user]
+        );
+        console.log(user[0].name);
+        result[i].user_name = user[0].name;
+      }
+
+      return res.send({ status: "OK", data: result });
     }
   } catch (error) {
     next(error);
