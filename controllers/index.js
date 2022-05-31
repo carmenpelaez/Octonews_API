@@ -1,5 +1,6 @@
 //Users controllers
 const createUser = require("../controllers/users/createUser");
+const getMyUser = require("../controllers/users/getMyUser");
 const editUser = require("../controllers/users/editUser");
 const editUserPassword = require("../controllers/users/editUserPassword");
 const login = require("../controllers/users/login");
@@ -38,4 +39,5 @@ module.exports = {
   ...replyComment,
   ...getComments,
   ...getCategories,
+  ...getMyUser,
 };

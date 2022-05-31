@@ -7,7 +7,7 @@ async function getNews(req, res, next) {
 
   try {
     connection = await getDB();
-    const { date, category } = req.query;
+    const { date, category, q } = req.query;
 
     if (date) {
       let currentDate = new Date(date);
@@ -49,34 +49,49 @@ async function getNews(req, res, next) {
           `SELECT name from users WHERE id = ?;`,
           [result[i].id_user]
         );
-        console.log(user[0].name);
         result[i].user_name = user[0].name;
       }
 
       return res.send({ status: "OK", data: result });
     } else {
-      const [result] = await connection.query(
-        `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
-     FROM news n
-     INNER JOIN news_votes nv ON nv.id_news = n.id
-     ${
-       category
-         ? `WHERE id_category =(SELECT id FROM categories WHERE name="${category}")`
-         : ``
-     }
-     GROUP BY n.id
-     ORDER BY n.creation_date DESC; `
-      );
-
-      for (let i = 0; i < result.length; i++) {
-        const [user] = await connection.query(
-          `SELECT name from users WHERE id = ?;`,
-          [result[i].id_user]
+      if (category) {
+        const [result] = await connection.query(
+          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
+          FROM news n
+          INNER JOIN news_votes nv ON nv.id_news = n.id
+          WHERE id_category =(SELECT id FROM categories WHERE name="${category}")
+          GROUP BY n.id
+          ORDER BY n.creation_date DESC; `
         );
-        result[i].user_name = user[0].name;
-      }
+        for (let i = 0; i < result.length; i++) {
+          const [user] = await connection.query(
+            `SELECT name from users WHERE id = ?;`,
+            [result[i].id_user]
+          );
+          result[i].user_name = user[0].name;
+        }
 
-      return res.send({ status: "OK", data: result });
+        return res.send({ status: "OK", data: result });
+      } else {
+        const [result] = await connection.query(
+          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
+        FROM news n
+        INNER JOIN news_votes nv ON nv.id_news = n.id
+        ${q ? `WHERE title  LIKE "%${q}%"` : ``}
+        GROUP BY n.id
+        ORDER BY n.creation_date DESC; `
+        );
+
+        for (let i = 0; i < result.length; i++) {
+          const [user] = await connection.query(
+            `SELECT name from users WHERE id = ?;`,
+            [result[i].id_user]
+          );
+          result[i].user_name = user[0].name;
+        }
+
+        return res.send({ status: "OK", data: result });
+      }
     }
   } catch (error) {
     next(error);
