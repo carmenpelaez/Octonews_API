@@ -5,6 +5,7 @@ const {
   deleteNews,
   editNews,
   getNews,
+  getSingleNews,
   voteNews,
   addComment,
   replyComment,
@@ -16,6 +17,7 @@ const router = Router();
 
 // News endpoints
 router.get("/news", getNews);
+router.get("/news/:id", getSingleNews);
 router.post("/news", [isAuth], addNews);
 router.post("/news/:idNews/votes", [isAuth, isNews], voteNews);
 router.put("/news/:idNews", [isAuth, isNews], editNews);
