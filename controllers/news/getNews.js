@@ -56,7 +56,7 @@ async function getNews(req, res, next) {
     } else {
       if (category) {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
+          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
           FROM news n
           INNER JOIN news_votes nv ON nv.id_news = n.id
           WHERE id_category =(SELECT id FROM categories WHERE name="${category}")
@@ -74,7 +74,7 @@ async function getNews(req, res, next) {
         return res.send({ status: "OK", data: result });
       } else {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votos
+          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
         FROM news n
         INNER JOIN news_votes nv ON nv.id_news = n.id
         ${q ? `WHERE title  LIKE "%${q}%"` : ``}

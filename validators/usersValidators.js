@@ -28,12 +28,10 @@ const editUserSchema = joi.object().keys({
     .error(generateError("The field email must contain a valid email", 400)),
   name: joi
     .string()
-    .max(100)
+    .min(3)
+    .max(10)
     .error(
-      generateError(
-        "The field name must not contain more than 100 characters",
-        400
-      )
+      generateError("The field name must be between 3 and 10 characters", 400)
     ),
   biography: joi
     .string()
