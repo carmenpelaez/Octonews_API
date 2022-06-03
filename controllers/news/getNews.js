@@ -19,10 +19,41 @@ async function getNews(req, res, next) {
         "yyyy/MM/dd"
       );
 
-      const [result] = await connection.query(
-        `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
+      if (q) {
+        const [result] = await connection.query(
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
        FROM news n
        INNER JOIN news_votes nv ON nv.id_news = n.id
+       LEFT JOIN news_comments nc ON nc.id_news = n.id
+       WHERE n.creation_date BETWEEN ? AND ?
+      ${q ? `AND title  LIKE "%${q}%"` : ``}
+       GROUP BY n.id 
+       ORDER BY n.creation_date DESC; `,
+          [date, currentDatePlusOneMoreDayFormatted]
+        );
+
+        if (result.length === 0) {
+          throw generateError(
+            "There is no news in this date with your search",
+            404
+          );
+        }
+
+        for (let i = 0; i < result.length; i++) {
+          const [user] = await connection.query(
+            `SELECT name from users WHERE id = ?;`,
+            [result[i].id_user]
+          );
+          result[i].user_name = user[0].name;
+        }
+
+        return res.send({ status: "OK", data: result });
+      } else {
+        const [result] = await connection.query(
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+       FROM news n
+       INNER JOIN news_votes nv ON nv.id_news = n.id
+       LEFT JOIN news_comments nc ON nc.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ? ${
          category
            ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
@@ -30,35 +61,37 @@ async function getNews(req, res, next) {
        }
        GROUP BY n.id 
        ORDER BY n.creation_date DESC; `,
-        [date, currentDatePlusOneMoreDayFormatted]
-      );
-
-      if (result.length === 0) {
-        if (category) {
-          throw generateError(
-            "There is no news in this date and category.",
-            404
-          );
-        } else {
-          throw generateError("There is no news in this date", 404);
-        }
-      }
-
-      for (let i = 0; i < result.length; i++) {
-        const [user] = await connection.query(
-          `SELECT name from users WHERE id = ?;`,
-          [result[i].id_user]
+          [date, currentDatePlusOneMoreDayFormatted]
         );
-        result[i].user_name = user[0].name;
-      }
 
-      return res.send({ status: "OK", data: result });
+        if (result.length === 0) {
+          if (category) {
+            throw generateError(
+              "There is no news in this date and category.",
+              404
+            );
+          } else {
+            throw generateError("There is no news in this date", 404);
+          }
+        }
+
+        for (let i = 0; i < result.length; i++) {
+          const [user] = await connection.query(
+            `SELECT name from users WHERE id = ?;`,
+            [result[i].id_user]
+          );
+          result[i].user_name = user[0].name;
+        }
+
+        return res.send({ status: "OK", data: result });
+      }
     } else {
       if (category) {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
           FROM news n
           INNER JOIN news_votes nv ON nv.id_news = n.id
+          LEFT JOIN news_comments nc ON nc.id_news = n.id
           WHERE id_category =(SELECT id FROM categories WHERE name="${category}")
           GROUP BY n.id
           ORDER BY n.creation_date DESC; `
@@ -74,9 +107,10 @@ async function getNews(req, res, next) {
         return res.send({ status: "OK", data: result });
       } else {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
         FROM news n
         INNER JOIN news_votes nv ON nv.id_news = n.id
+        LEFT JOIN news_comments nc ON nc.id_news = n.id
         ${q ? `WHERE title  LIKE "%${q}%"` : ``}
         GROUP BY n.id
         ORDER BY n.creation_date DESC; `
