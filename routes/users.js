@@ -9,11 +9,13 @@ const {
   recoverUserPassword,
   resetPassword,
   getMyUser,
+  getAnUserInformation,
 } = require("../controllers");
 
 const router = Router();
 
 router.get("/user", [isAuth], getMyUser);
+router.get("/users/:id", getAnUserInformation);
 router.post("/users", newUser);
 router.post("/users/login", loginUser);
 router.put("/users/:id", [isAuth], editUser);
