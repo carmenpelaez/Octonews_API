@@ -1,6 +1,7 @@
 //Users controllers
 const createUser = require("../controllers/users/createUser");
 const getMyUser = require("../controllers/users/getMyUser");
+const getAnUserInformation = require("../controllers/users/getAnUserInformation");
 const editUser = require("../controllers/users/editUser");
 const editUserPassword = require("../controllers/users/editUserPassword");
 const login = require("../controllers/users/login");
@@ -42,4 +43,5 @@ module.exports = {
   ...getComments,
   ...getCategories,
   ...getMyUser,
+  ...getAnUserInformation,
 };

@@ -1,7 +1,5 @@
 const getDB = require("../../database/config");
-/* const { add, format } = require("date-fns"); */
 const { generateError } = require("../../helpers");
-/* const { number } = require("sharp/lib/is"); */
 
 async function getSingleNews(req, res, next) {
   let connection;
@@ -17,9 +15,10 @@ async function getSingleNews(req, res, next) {
       const [result] = await connection.query(
         `SELECT n.id,title,introduction_text,news_text,image, creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes
             FROM news n
-            INNER JOIN news_votes nv ON nv.id_news = ${idNumber}
-            WHERE n.id = ${idNumber}
-            `
+            INNER JOIN news_votes nv ON nv.id_news = ?
+            WHERE n.id = ?
+            `,
+        [idNumber, idNumber]
       );
 
       const resultDestructured = result[0];
