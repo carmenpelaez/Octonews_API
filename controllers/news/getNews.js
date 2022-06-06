@@ -56,12 +56,12 @@ async function getNews(req, res, next) {
        LEFT JOIN news_comments nc ON nc.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ? ${
          category
-           ? `AND id_category =(SELECT id_category FROM categories WHERE name="${category}")`
+           ? `AND id_category =(SELECT id FROM categories WHERE name=?)`
            : ``
        }
        GROUP BY n.id 
        ORDER BY n.creation_date DESC; `,
-          [date, currentDatePlusOneMoreDayFormatted]
+          [date, currentDatePlusOneMoreDayFormatted, category]
         );
 
         if (result.length === 0) {
