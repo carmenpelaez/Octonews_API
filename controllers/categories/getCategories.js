@@ -7,7 +7,9 @@ const getCategories = async (req, res, next) => {
     const { id } = req.params;
     //We get all categories
 
-    let [result] = await connection.query(`SELECT id, name from categories`);
+    let [result] = await connection.query(
+      `SELECT id, name, color, icon_image, background_image, description from categories`
+    );
 
     // send result
 
