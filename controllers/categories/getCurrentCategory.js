@@ -1,13 +1,18 @@
 const getDB = require("../../database/config");
 
-const getCategories = async (req, res, next) => {
+const getCurrentCategory = async (req, res, next) => {
   let connection;
   try {
     connection = await getDB();
-    const { id } = req.params;
-    //We get all categories
+    const { idCategory } = req.params;
 
-    let [result] = await connection.query(`SELECT id, name from categories`);
+    //We get the category
+
+    let [result] = await connection.query(
+      `SELECT id, name, color, icon_image, background_image, description from categories
+    WHERE id = ?`,
+      [idCategory]
+    );
 
     // send result
 
@@ -25,5 +30,5 @@ const getCategories = async (req, res, next) => {
 };
 
 module.exports = {
-  getCategories,
+  getCurrentCategory,
 };

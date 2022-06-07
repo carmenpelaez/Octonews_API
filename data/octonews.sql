@@ -28,8 +28,12 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
+  `color` varchar(10) NOT NULL,
+  `icon_image` tinytext NOT NULL,
+  `background_image` tinytext NOT NULL,
+  `description` tinytext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +42,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'culture'),(2,'nature'),(3,'politics'),(4,'art'),(5,'Health');
+INSERT INTO `categories` VALUES (1,'culture','#3cc4ff9f','2134234234252.jpg','42415sa5.jpg','The category of monuments and food, of habits and drinks.'),(2,'nature','#13AF0880','339314301050201.webp','53dvadvs52.png','A category where you can breath at ease and talk about what earth give us.'),(3,'politics','#eff92d9f','5527725.png','64dsfha.jpg','debate, discussion all you can expect about politics.'),(4,'art','#ff24959f','2352352135675843.png','t34sasdf.jpg','All the news you can expect with a "picturesque" tone'),(5,'health','#f92d2d9f','35236216.webp','5235sfs.jpg','Here you will find all news related to health.');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 

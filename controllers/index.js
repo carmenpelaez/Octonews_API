@@ -22,6 +22,7 @@ const replyComment = require("../controllers/news/comments/replyComment");
 const getComments = require("../controllers/news/comments/getComments");
 //Categories controllers
 const getCategories = require("../controllers/categories/getCategories");
+const getCurrentCategory = require("../controllers/categories/getCurrentCategory");
 
 module.exports = {
   ...createUser,
@@ -42,6 +43,7 @@ module.exports = {
   ...replyComment,
   ...getComments,
   ...getCategories,
+  ...getCurrentCategory,
   ...getMyUser,
   ...getAnUserInformation,
 };
