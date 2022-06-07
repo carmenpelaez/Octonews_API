@@ -13,11 +13,9 @@ const getCategories = async (req, res, next) => {
 
     // send result
 
-    const categoryData = result[0];
-
     res.send({
       status: "ok",
-      data: categoryData,
+      data: result,
     });
   } catch (error) {
     //if there is an error, we send it to the next middleware/function
