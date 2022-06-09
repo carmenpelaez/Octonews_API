@@ -4,7 +4,7 @@ const { generateError } = require("../helpers/generateError");
 const addNewsSchema = joi.object().keys({
   title: joi
     .string()
-    .min(10)
+    .min(5)
     .max(300)
     .required()
     .error(
@@ -26,7 +26,7 @@ const addNewsSchema = joi.object().keys({
     ),
   text: joi
     .string()
-    .min(25)
+    .min(10)
     .max(5000)
     .required()
     .error(

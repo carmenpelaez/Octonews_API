@@ -15,6 +15,7 @@ const editNews = require("../controllers/news/editNews");
 const getNews = require("../controllers/news/getNews");
 const getSingleNews = require("../controllers/news/getSingleNews");
 const voteNews = require("../controllers/news/voteNews");
+const getNewsVotes = require("../controllers/news/getNewsVotes");
 //Comments controllers
 const addComment = require("../controllers/news/comments/addComment");
 const deleteComment = require("../controllers/news/comments/deleteComment");
@@ -37,6 +38,7 @@ module.exports = {
   ...editNews,
   ...getNews,
   ...getSingleNews,
+  ...getNewsVotes,
   ...voteNews,
   ...addComment,
   ...deleteComment,

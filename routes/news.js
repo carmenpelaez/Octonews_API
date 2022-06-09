@@ -11,6 +11,7 @@ const {
   replyComment,
   deleteComment,
   getComments,
+  getNewsVotes,
 } = require("../controllers/index");
 
 const router = Router();
@@ -19,6 +20,7 @@ const router = Router();
 router.get("/news", getNews);
 router.get("/news/:id", getSingleNews);
 router.post("/news", [isAuth], addNews);
+router.get("/news/:idNews/votes", [isNews], getNewsVotes);
 router.post("/news/:idNews/votes", [isAuth, isNews], voteNews);
 router.put("/news/:idNews", [isAuth, isNews], editNews);
 router.delete("/news/:idNews", [isAuth, isNews], deleteNews);
