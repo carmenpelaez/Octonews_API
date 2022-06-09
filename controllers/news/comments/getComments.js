@@ -8,7 +8,7 @@ const getComments = async (req, res, next) => {
 
     //Firts get all comments
     let [result] = await connection.query(
-      `SELECT id,comment,id_user,id_reply_message FROM news_comments WHERE id_news = ?`,
+      `SELECT id,comment,id_user,id_reply_message,creation_date FROM news_comments WHERE id_news = ?`,
       [idNews]
     );
 
