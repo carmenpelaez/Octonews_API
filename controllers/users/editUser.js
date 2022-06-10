@@ -23,14 +23,6 @@ async function editUser(req, res, next) {
       throw generateError("You can't edit another user", 403);
     }
 
-    if (name === req.user.name) {
-      throw generateError("The name is actually the same", 403);
-    }
-
-    if (biography === req.user.biography) {
-      throw generateError("The biography is actually the same", 403);
-    }
-
     let savedFileName;
 
     if (req.files && req.files.avatar) {
@@ -84,8 +76,9 @@ async function editUser(req, res, next) {
       } catch (error) {
         throw generateError("Error sending the email", 500);
       }
-      await connection.query(
-        `
+      if (req.files) {
+        await connection.query(
+          `
           UPDATE users 
           SET 
           ${name ? `name="${name}",` : ``}
@@ -95,13 +88,32 @@ async function editUser(req, res, next) {
           last_update_date=UTC_TIMESTAMP, authenticated=0, registrationCode=?
           WHERE id=?
         `,
-        [email, registrationCode, id]
-      );
+          [email, registrationCode, id]
+        );
 
-      res.send({
-        status: "ok",
-        data: "User updated: Check your email to activate it again.",
-      });
+        res.send({
+          status: "ok",
+          data: "User updated: Check your email to activate it again.",
+        });
+      } else {
+        await connection.query(
+          `
+          UPDATE users 
+          SET 
+          ${name ? `name="${name}",` : ``}
+          email=?, 
+          ${biography ? `biography="${biography}",` : ``}  
+          last_update_date=UTC_TIMESTAMP, authenticated=0, registrationCode=?
+          WHERE id=?
+        `,
+          [email, registrationCode, id]
+        );
+
+        res.send({
+          status: "ok",
+          data: "User updated: Check your email to activate it again.",
+        });
+      }
     } else {
       /* If user doesn't provide any email to update this will be the function running */
       // Update user on database

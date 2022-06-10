@@ -35,6 +35,7 @@ const editUserSchema = joi.object().keys({
     ),
   biography: joi
     .string()
+    .allow(null, "")
     .max(250)
     .error(
       generateError(
