@@ -28,11 +28,7 @@ router.delete("/news/:idNews", [isAuth, isNews], deleteNews);
 // News/comments Endpoints
 router.get("/news/:idNews/comments", [isNews], getComments);
 router.post("/news/:idNews/comment", [isAuth, isNews], addComment);
-router.post(
-  "/news/:idNews/:idComment/reply",
-  [isAuth, isNews, isComment],
-  replyComment
-);
+
 router.delete("/news/:idNews/:idComment", [isAuth, isComment], deleteComment);
 
 module.exports = router;
