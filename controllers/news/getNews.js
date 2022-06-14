@@ -21,9 +21,8 @@ async function getNews(req, res, next) {
 
       if (q) {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, (SELECT SUM(vote) FROM news_votes WHERE id_news = n.id) as votes, COUNT(nc.id) AS comments
        FROM news n
-       INNER JOIN news_votes nv ON nv.id_news = n.id
        LEFT JOIN news_comments nc ON nc.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ?
       ${q ? `AND title  LIKE "%${q}%"` : ``}
@@ -50,9 +49,8 @@ async function getNews(req, res, next) {
         return res.send({ status: "OK", data: result });
       } else {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, (SELECT SUM(vote) FROM news_votes WHERE id_news = n.id) as votes, COUNT(nc.id) AS comments
        FROM news n
-       INNER JOIN news_votes nv ON nv.id_news = n.id
        LEFT JOIN news_comments nc ON nc.id_news = n.id
        WHERE n.creation_date BETWEEN ? AND ? ${
          category
@@ -88,9 +86,8 @@ async function getNews(req, res, next) {
     } else {
       if (category) {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, (SELECT SUM(vote) FROM news_votes WHERE id_news = n.id) as votes, COUNT(nc.id) AS comments
           FROM news n
-          INNER JOIN news_votes nv ON nv.id_news = n.id
           LEFT JOIN news_comments nc ON nc.id_news = n.id
           WHERE id_category =(SELECT id FROM categories WHERE name="${category}")
           GROUP BY n.id
@@ -107,9 +104,8 @@ async function getNews(req, res, next) {
         return res.send({ status: "OK", data: result });
       } else {
         const [result] = await connection.query(
-          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+          `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, last_update_date, id_category, n.id_user, (SELECT SUM(vote) FROM news_votes WHERE id_news = n.id) as votes, COUNT(nc.id) AS comments
         FROM news n
-        INNER JOIN news_votes nv ON nv.id_news = n.id
         LEFT JOIN news_comments nc ON nc.id_news = n.id
         ${q ? `WHERE title  LIKE "%${q}%"` : ``}
         GROUP BY n.id

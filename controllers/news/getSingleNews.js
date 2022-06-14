@@ -13,9 +13,8 @@ async function getSingleNews(req, res, next) {
 
     if (idNumber) {
       const [result] = await connection.query(
-        `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, n.last_update_date, id_category, n.id_user, SUM(nv.vote) AS votes, COUNT(nc.id) AS comments
+        `SELECT n.id,title,introduction_text,news_text,image, n.creation_date, n.last_update_date, id_category, (SELECT SUM(vote) FROM news_votes WHERE id_news = n.id) as votes, COUNT(nc.id) AS comments
             FROM news n
-            INNER JOIN news_votes nv ON nv.id_news = ?
             LEFT JOIN news_comments nc ON nc.id_news = n.id
             WHERE n.id = ?
             `,
