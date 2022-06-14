@@ -15,10 +15,11 @@ const addComment = async (req, res, next) => {
 
     /* No sé si id_reply_message debería ir envuelto en Number() */
     if (id_reply_message) {
+      const commentDate = new Date();
       const [result] = await connection.query(
         `INSERT INTO news_comments (comment, creation_date,id_news,id_user,id_reply_message)
-       VALUES (?,UTC_TIMESTAMP,?,?);`,
-        [comment, Number(idNews), req.user.id, id_reply_message]
+       VALUES (?,?,?,?,?);`,
+        [comment, commentDate, Number(idNews), req.user.id, id_reply_message]
       );
 
       // send result
@@ -31,13 +32,15 @@ const addComment = async (req, res, next) => {
           id_news: Number(idNews),
           id_user: req.user.id,
           id_reply_message,
+          creation_date: commentDate,
         },
       });
     } else {
+      const commentDate = new Date();
       const [result] = await connection.query(
         `INSERT INTO news_comments (comment, creation_date,id_news,id_user)
-       VALUES (?,UTC_TIMESTAMP,?,?);`,
-        [comment, Number(idNews), req.user.id]
+       VALUES (?,?,?,?);`,
+        [comment, commentDate, Number(idNews), req.user.id]
       );
 
       // send result
@@ -49,6 +52,9 @@ const addComment = async (req, res, next) => {
           comment,
           id_news: Number(idNews),
           id_user: req.user.id,
+          name: "aaaa",
+          creation_date: commentDate,
+          id_reply_message: null,
         },
       });
     }

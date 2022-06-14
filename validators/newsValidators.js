@@ -82,6 +82,7 @@ const voteEntrySchema = joi.object().keys({
 });
 
 const addCommentSchema = joi.object().keys({
+  id_reply_message: joi.number().optional(),
   comment: joi
     .string()
     .min(1)
@@ -93,6 +94,7 @@ const addCommentSchema = joi.object().keys({
         400
       )
     ),
+  creation_date: joi.date(),
 });
 
 module.exports = {
