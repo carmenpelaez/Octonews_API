@@ -9,13 +9,13 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "createUser",
+					"name": "newUser",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"stefano@gmail.com\",\n    \"name\": \"Stefano\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"email\": \"ecollazodominguez@gmail.com\",\n    \"name\": \"eduardo\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,7 +23,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/users",
+							"raw": "http://127.0.0.1:4000/users",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -31,7 +31,7 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"users"
 							]
@@ -40,60 +40,7 @@
 					"response": []
 				},
 				{
-					"name": "validateUser",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/users/validate/0b49ebcd416df84e96a7a4c82ce41a02cb7e4274",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"validate",
-								"0b49ebcd416df84e96a7a4c82ce41a02cb7e4274"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "resetPassword",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"recoverCode\": \"b756ad22fffc1c16233279dea032789d35f3a1a4\",\r\n    \"newPassword\": \"asdasdasd\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/users/reset-password",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"reset-password"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login",
+					"name": "loginUser",
 					"event": [
 						{
 							"listen": "test",
@@ -110,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"stefano@gmail.com\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,7 +65,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/users/login",
+							"raw": "http://127.0.0.1:4000/users/login",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -126,75 +73,10 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"users",
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "editUserPassword",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"oldPassword\":\"12345678\",\r\n    \"newPassword\":\"123456789\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/users/3/password",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"3",
-								"password"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "recoverUserPassword",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"stefano@gmail.com\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/users/recover-password",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"recover-password"
 							]
 						}
 					},
@@ -237,14 +119,180 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/users/3",
+							"raw": "localhost:4000/users/3",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"users",
 								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMyUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAnUserInformation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/users/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validateUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/users/validate/0b49ebcd416df84e96a7a4c82ce41a02cb7e4274",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"validate",
+								"0b49ebcd416df84e96a7a4c82ce41a02cb7e4274"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recoverCode\": \"b756ad22fffc1c16233279dea032789d35f3a1a4\",\r\n    \"newPassword\": \"asdasdasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/users/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editUserPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"12345678\",\r\n    \"newPassword\":\"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/users/3/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"3",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recoverUserPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"stefano@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/users/recover-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"recover-password"
 							]
 						}
 					},
@@ -283,7 +331,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/1/comments",
+									"raw": "http://127.0.0.1:4000/news/5/comments",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -291,10 +339,10 @@
 										"0",
 										"1"
 									],
-									"port": "3000",
+									"port": "4000",
 									"path": [
 										"news",
-										"1",
+										"5",
 										"comments"
 									]
 								}
@@ -314,7 +362,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"comment\":\"This is another comment wooo\"\n}",
+									"raw": "{\n    \"comment\":\"This is another comment wooo\",\n    \"name\":\"alfonso\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -322,7 +370,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/1/comment",
+									"raw": "http://127.0.0.1:4000/news/1/comment",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -330,7 +378,7 @@
 										"0",
 										"1"
 									],
-									"port": "3000",
+									"port": "4000",
 									"path": [
 										"news",
 										"1",
@@ -353,7 +401,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"comment\":\"This is a reply comment hehe\"\n}",
+									"raw": "{\n    \"comment\":\"This is a reply comment hehe\",\n    \"id_reply_message\":\"1\",\n    \"name\":\"trasto\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -361,7 +409,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/1/2/reply",
+									"raw": "http://127.0.0.1:4000/news/1/2/reply",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -369,7 +417,7 @@
 										"0",
 										"1"
 									],
-									"port": "3000",
+									"port": "4000",
 									"path": [
 										"news",
 										"1",
@@ -401,7 +449,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/news/1/2",
+									"raw": "http://127.0.0.1:4000/news/1/2",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -409,7 +457,7 @@
 										"0",
 										"1"
 									],
-									"port": "3000",
+									"port": "4000",
 									"path": [
 										"news",
 										"1",
@@ -422,12 +470,12 @@
 					]
 				},
 				{
-					"name": "getNews",
+					"name": "getSingleNews",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/news",
+							"raw": "http://127.0.0.1:4000/news/5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -435,9 +483,91 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
+							"path": [
+								"news",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNews",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:4000/news",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
 							"path": [
 								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNews with text",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/news?q=strange",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"news"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "strange"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNews with text with a different date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/news?q=beautiful&date=2022-04-30",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"news"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "beautiful"
+								},
+								{
+									"key": "date",
+									"value": "2022-04-30"
+								}
 							]
 						}
 					},
@@ -449,11 +579,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/news?date=2022-04-29",
+							"raw": "localhost:4000/news?date=2022-04-29",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news"
 							],
@@ -497,11 +627,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/news?date=2022-04-29&category=culture",
+							"raw": "localhost:4000/news?date=2022-04-29&category=culture",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news"
 							],
@@ -532,7 +662,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \" wawawaasdas\",\n    \"introduction\": \"Dlalalalalalalala\",\n    \"text\": \"this is a text with so many characters\",\n    \"category\": \"Culture\"\n}",
+							"raw": "{\n    \"title\": \" wawawaasdas\",\n    \"introduction\": \"Dlalalalalalalala\",\n    \"text\": \"this is a text with so many characters\",\n    \"category\": \"Culture\",\n    \"image\": null\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -540,7 +670,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/news",
+							"raw": "http://127.0.0.1:4000/news",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -548,7 +678,7 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news"
 							]
@@ -582,23 +712,23 @@
 								},
 								{
 									"key": "text",
-									"value": "thepotatoisapatatthanpotato",
+									"value": "thepotatoisapatatthanpotatopatat sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad sad JAJAJAJa",
 									"type": "text"
 								},
 								{
 									"key": "category",
-									"value": "culture",
+									"value": "art",
 									"type": "text"
 								},
 								{
-									"key": "image",
+									"key": "'image'",
 									"type": "file",
 									"src": "/D:/Edu/w4dvxcevm8z71.png"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/news",
+							"raw": "http://127.0.0.1:4000/news",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -606,9 +736,45 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNewsVotes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recoverCode\": \"b756ad22fffc1c16233279dea032789d35f3a1a4\",\r\n    \"newPassword\": \"asdasdasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:4000/news/16/votes",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"news",
+								"16",
+								"votes"
 							]
 						}
 					},
@@ -635,7 +801,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/news/1/votes",
+							"raw": "http://127.0.0.1:4000/news/1/votes",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -643,49 +809,11 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news",
 								"1",
 								"votes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "editNews No Image",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"text\":\"sdfasdfasdfasdfsadfwerwqerwqerwqer\",\r\n    \"introduction\":\"wegwqegqwg\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3000/news/2",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3000",
-							"path": [
-								"news",
-								"2"
 							]
 						}
 					},
@@ -723,7 +851,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/news/2",
+							"raw": "http://127.0.0.1:4000/news/2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -731,7 +859,45 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
+							"path": [
+								"news",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editNews No Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\":\"sdfasdfasdfasdfsadfwerwqerwqerwqer\",\r\n    \"introduction\":\"wegwqegqwg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:4000/news/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
 							"path": [
 								"news",
 								"2"
@@ -761,7 +927,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/news/1",
+							"raw": "http://127.0.0.1:4000/news/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -769,7 +935,7 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"news",
 								"1"
@@ -789,7 +955,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/categories",
+							"raw": "http://127.0.0.1:4000/categories",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -797,9 +963,32 @@
 								"0",
 								"1"
 							],
-							"port": "3000",
+							"port": "4000",
 							"path": [
 								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCurrentCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:4000/categories/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"categories",
+								"1"
 							]
 						}
 					},

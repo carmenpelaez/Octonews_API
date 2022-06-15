@@ -13,8 +13,6 @@ const addComment = async (req, res, next) => {
 
     //Insert comment associating idUser and idNews
 
-    console.log(req.body);
-
     if (id_reply_message) {
       const commentDate = new Date();
       const [result] = await connection.query(

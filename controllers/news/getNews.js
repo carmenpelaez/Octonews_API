@@ -13,7 +13,7 @@ async function getNews(req, res, next) {
       let currentDate = new Date(date);
       let currentDatePlusOneMoreDay = add(currentDate, {
         days: 1,
-      }); /* Cambiar a nombres mas cortos */
+      });
       let currentDatePlusOneMoreDayFormatted = format(
         currentDatePlusOneMoreDay,
         "yyyy/MM/dd"

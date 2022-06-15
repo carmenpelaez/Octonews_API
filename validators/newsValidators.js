@@ -15,7 +15,7 @@ const addNewsSchema = joi.object().keys({
     ),
   introduction: joi
     .string()
-    .min(10)
+    .min(3)
     .max(500)
     .required()
     .error(
@@ -26,7 +26,7 @@ const addNewsSchema = joi.object().keys({
     ),
   text: joi
     .string()
-    .min(10)
+    .min(3)
     .max(5000)
     .required()
     .error(
