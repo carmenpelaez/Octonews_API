@@ -7,9 +7,7 @@ async function getSingleNews(req, res, next) {
 
   try {
     connection = await getDB();
-    /*  console.log("body de peticion", req.body); */
     const { id } = req.params;
-    /*   const { id_user } = req.body; */
     const idNumber = Number(id);
 
     /* I convert the id into a Number because in case someone puts a string on the req.params it should give a different error. */
@@ -23,30 +21,24 @@ async function getSingleNews(req, res, next) {
             `,
         [idNumber, idNumber]
       );
-
       const [result2] = await connection.query(
-        `SELECT name, avatar FROM users WHERE id = ? `,
+        `SELECT name FROM users WHERE id = ? `,
         [result[0].id_user]
       );
 
       result[0].name = result2[0].name;
-      result[0].avatar = result2[0].avatar;
-
       const resultDestructured = result[0];
-      /* resultDestructured.name = result2[0]; */
-
-      /* console.log("prueba de introducir propiedad", resultDestructured); */
 
       if (resultDestructured.id === null) {
         throw generateError(
-          "There is no new with the id you are searching",
+          "There is no news with the id you are searching",
           404
         );
       }
 
       return res.send({ status: "OK", data: resultDestructured });
     } else {
-      throw generateError("The new's id must exist and be a number.", 404);
+      throw generateError("The news id must exist and be a number.", 404);
     }
   } catch (error) {
     next(error);

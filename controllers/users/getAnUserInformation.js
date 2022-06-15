@@ -8,7 +8,6 @@ async function getAnUserInformation(req, res, next) {
     connection = await getDB();
     const { id } = req.params;
     const idNumber = Number(id);
-    console.log(typeof id);
 
     if (idNumber) {
       const [result] = await connection.query(
