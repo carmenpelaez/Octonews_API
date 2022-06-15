@@ -8,12 +8,13 @@ const addComment = async (req, res, next) => {
 
     await addCommentSchema.validateAsync(req.body);
 
-    const { comment, id_reply_message } = req.body;
+    const { comment, id_reply_message, name } = req.body;
     const { idNews } = req.params;
 
     //Insert comment associating idUser and idNews
 
-    /* No sé si id_reply_message debería ir envuelto en Number() */
+    console.log(req.body);
+
     if (id_reply_message) {
       const commentDate = new Date();
       const [result] = await connection.query(
@@ -52,7 +53,7 @@ const addComment = async (req, res, next) => {
           comment,
           id_news: Number(idNews),
           id_user: req.user.id,
-          name: "aaaa",
+          name: name,
           creation_date: commentDate,
           id_reply_message: null,
         },
