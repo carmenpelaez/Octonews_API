@@ -55,7 +55,7 @@ DROP TABLE IF EXISTS `news`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `news` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` char(300) NOT NULL,
+  `title` varchar(300) NOT NULL,
   `introduction_text` tinytext NOT NULL,
   `news_text` varchar(5000) NOT NULL,
   `image` tinytext,
