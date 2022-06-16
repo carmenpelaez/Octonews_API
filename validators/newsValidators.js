@@ -83,7 +83,7 @@ const voteEntrySchema = joi.object().keys({
 
 const addCommentSchema = joi.object().keys({
   name: joi.string().min(3).max(10).required(),
-  avatar: joi.string().required(),
+  avatar: joi.optional(),
   id_reply_message: joi.optional(),
   comment: joi
     .string()
