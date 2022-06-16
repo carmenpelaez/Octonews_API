@@ -8,7 +8,7 @@ const addComment = async (req, res, next) => {
 
     await addCommentSchema.validateAsync(req.body);
 
-    const { comment, id_reply_message, name } = req.body;
+    const { comment, id_reply_message, name, avatar } = req.body;
     const { idNews } = req.params;
 
     //Insert comment associating idUser and idNews
@@ -30,6 +30,8 @@ const addComment = async (req, res, next) => {
           comment,
           id_news: Number(idNews),
           id_user: req.user.id,
+          name: name,
+          avatar,
           id_reply_message,
           creation_date: commentDate,
         },
@@ -51,6 +53,7 @@ const addComment = async (req, res, next) => {
           comment,
           id_news: Number(idNews),
           id_user: req.user.id,
+          avatar,
           name: name,
           creation_date: commentDate,
           id_reply_message: null,
