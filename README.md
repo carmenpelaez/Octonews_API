@@ -2,6 +2,10 @@
 
 Octonews it's a collaborative news API. Check the latest news, filtering them by date, category or both! News can be seen without sign in. If you would like to create your own news, like or dislike them, you have the opportunity to register an account.
 
+#LINK TO THE DEPLOYED PROJECT
+
+--> https://immense-falls-55512.herokuapp.com/
+
 # SET-UP
 
 ## - Module install.
